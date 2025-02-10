@@ -1,0 +1,14 @@
+fileFormatVersion: 2
+guid: aacc6b92e22354b439bba1275e2944c6
+MonoImporter:
+  externalObjects: {}
+  serializedVersion: 2
+  defaultReferences:
+  - outpost: {fileID: 1049170816381095832, guid: 299e5b1d16655034aa1cf9e780c7ca08,
+      type: 3}
+  - moon: {fileID: 15600000, guid: d66783208e3a3b24bb5e6f8479d4c242, type: 2}
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
