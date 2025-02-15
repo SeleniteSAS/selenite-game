@@ -1,8 +1,6 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
-public class EnemyAI : MonoBehaviour
+public class EnemyMovement : MonoBehaviour
 {
     [SerializeField] private Transform player;
     [SerializeField] private float moveSpeed = 5f;
@@ -30,11 +28,8 @@ public class EnemyAI : MonoBehaviour
     private void Update()
     {
         if (!player) return;
-
         var distanceToPlayer = Vector3.Distance(transform.position, player.position);
-
         if (!(distanceToPlayer <= detectionRange)) return;
-
         if (distanceToPlayer > stoppingDistance)
         {
             MoveTowardsPlayer();
