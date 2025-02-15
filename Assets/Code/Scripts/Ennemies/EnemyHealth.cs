@@ -24,7 +24,7 @@ public class EnemyHealth : MonoBehaviour
 
     private void Die()
     {
-        Debug.Log("Le vaisseau ennemi est détruit !");
+        Debug.Log("The enemy died!");
         waveManager.EnemyKilled();
         Destroy(gameObject);
     }

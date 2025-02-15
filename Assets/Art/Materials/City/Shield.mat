@@ -17,7 +17,7 @@ Material:
   - _RECEIVE_SHADOWS_OFF
   - _SURFACE_TYPE_TRANSPARENT
   m_InvalidKeywords: []
-  m_LightmapFlags: 2
+  m_LightmapFlags: 1
   m_EnableInstancingVariants: 0
   m_DoubleSidedGI: 0
   m_CustomRenderQueue: 3000
@@ -92,7 +92,7 @@ Material:
     - _AlphaToMask: 0
     - _Blend: 0
     - _BlendModePreserveSpecular: 1
-    - _BumpScale: 1
+    - _BumpScale: 0
     - _ClearCoatMask: 0
     - _ClearCoatSmoothness: 0
     - _Cull: 2
@@ -119,9 +119,9 @@ Material:
     - _WorkflowMode: 1
     - _ZWrite: 0
     m_Colors:
-    - _BaseColor: {r: 0.91194963, g: 0.07742955, b: 0.16229612, a: 0.11764706}
-    - _Color: {r: 0.91194963, g: 0.077429526, b: 0.16229609, a: 0.11764706}
-    - _EmissionColor: {r: 0.8148468, g: 0.00699541, b: 0.022173883, a: 1}
+    - _BaseColor: {r: 0.77254903, g: 0.054227665, b: 0.1152338, a: 0.6431373}
+    - _Color: {r: 0.77254903, g: 0.054227643, b: 0.11523377, a: 0.6431373}
+    - _EmissionColor: {r: 0.21833278, g: 0.0018743736, b: 0.0059413444, a: 1}
     - _SpecColor: {r: 0.19999996, g: 0.19999996, b: 0.19999996, a: 1}
   m_BuildTextureStacks: []
 --- !u!114 &7359625705902573885

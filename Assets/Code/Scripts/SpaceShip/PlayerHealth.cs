@@ -30,7 +30,7 @@ public class PlayerHealth : MonoBehaviour
 
     private void Die()
     {
-        Debug.Log("Le vaisseau principal est détruit !");
+        Debug.Log("The player died!");
         Destroy(gameObject);
     }
 
@@ -38,7 +38,7 @@ public class PlayerHealth : MonoBehaviour
     {
         if (hpText != null)
         {
-            hpText.text = "HP: " + currentHealth;
+            hpText.text = currentHealth.ToString();
         }
     }
 }

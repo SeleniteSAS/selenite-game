@@ -1,16 +1,43 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class OutpostSpawn : MonoBehaviour
 {
     [SerializeField] private GameObject outpost;
 
+    private float width;
+    private float coordX;
+    private float coordY;
+    private float offset = 500;
+
+    public enum DifficultyLevels{
+        Easy,
+        Medium,
+        Hard
+    }
+
+    public DifficultyLevels difficulty;
+
     private void Start()
     {
-        for (var i = 0; i < 6; i++)
+        width = GetComponent<Terrain>().terrainData.size.x;
+
+        for (var i = 0; i < 3; i++)
         {
-            Instantiate(outpost, new Vector3(Random.Range(1000,3000),150,Random.Range(1000,3000)), Quaternion.identity);
+            for (var j = 0; j < 3; j++)
+            {
+                if (j == 1 || i == 1) continue;
+                coordX = Random.Range(width/3*j+offset,width/3*(j+1)-offset);
+                coordY = Random.Range(width/3*i+offset,width/3*(i+1)-offset);
+                Instantiate(outpost, new Vector3(coordX,Terrain.activeTerrain.SampleHeight(new Vector3(coordX,0,coordY))+50,coordY), Quaternion.Euler(0,Random.Range(0,360),0));
+            }
         }
     }
 }
+
+// terrain = GetComponent<Terrain>();
+// for (int i = 0; i < outpostNumber; i++)
+// {
+//     float coordX = Random.Range(1000,3000);
+//     float coordY = Random.Range(1000,3000);
+//
+// }

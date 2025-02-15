@@ -1,14 +1,17 @@
 using System.Collections;
 using UnityEngine;
-using TMPro;  // Import de TextMeshPro
+using TMPro;
 
 public class WaveManager : MonoBehaviour
 {
     [SerializeField] private GameObject[] enemyPrefabs;
-    [SerializeField] private Transform[] spawnPoints;
     [SerializeField] private int totalWaves = 10;
     [SerializeField] private float timeBetweenWaves = 5f;
     [SerializeField] private TextMeshProUGUI waveMessage;
+    [SerializeField] private float outpostCount = 8;
+    [SerializeField] private GameObject shield;
+    [SerializeField] private Vector2 spawnAreaMin;
+    [SerializeField] private Vector2 spawnAreaMax;
 
     private int currentWave;
     private int enemiesPerWave;
@@ -39,17 +42,28 @@ public class WaveManager : MonoBehaviour
             SpawnEnemy();
             yield return new WaitForSeconds(0.5f);
         }
+    }
 
-        waveMessage.text = "";
+    public void OutpostHandle()
+    {
+        outpostCount -= 1;
+
+        if (outpostCount <= 0)
+        {
+            Destroy(shield);
+        }
     }
 
     private void SpawnEnemy()
     {
-        var spawnIndex = Random.Range(0, spawnPoints.Length);
+        var spawnPosition = new Vector3(
+            Random.Range(spawnAreaMin.x, spawnAreaMax.x),
+            0f,
+            Random.Range(spawnAreaMin.y, spawnAreaMax.y)
+        );
 
         var enemyIndex = GetEnemyIndexForWave();
-        
-        Instantiate(enemyPrefabs[enemyIndex], spawnPoints[spawnIndex].position, spawnPoints[spawnIndex].rotation);
+        Instantiate(enemyPrefabs[enemyIndex], spawnPosition, Quaternion.identity);
     }
 
     private int GetEnemyIndexForWave()
