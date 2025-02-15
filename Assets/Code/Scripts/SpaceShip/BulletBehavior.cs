@@ -3,7 +3,7 @@ using UnityEngine;
 public class BulletBehavior : MonoBehaviour
 {
     [SerializeField] private float lifetime;
-    [SerializeField] private int damage = 10;
+    [SerializeField] public int damage = 10;
     [SerializeField] private GameObject explosion;
 
     private Rigidbody rb;
@@ -12,7 +12,7 @@ public class BulletBehavior : MonoBehaviour
     private void Awake()
     {
         rb = GetComponent<Rigidbody>();
-        rb.AddForce(transform.forward * 30000);
+        rb.AddForce(transform.forward * 50000);
     }
 
     private void Update(){

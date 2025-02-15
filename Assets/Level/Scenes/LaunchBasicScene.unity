@@ -97,7 +97,8 @@ LightmapSettings:
     m_TrainingDataDestination: TrainingData
     m_LightProbeSampleCountMultiplier: 4
   m_LightingDataAsset: {fileID: 0}
-  m_LightingSettings: {fileID: 0}
+  m_LightingSettings: {fileID: 4890085278179872738, guid: ccc497c6201474c46b1885e3ee902dcd,
+    type: 2}
 --- !u!196 &4
 NavMeshSettings:
   serializedVersion: 2
@@ -1051,11 +1052,7 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents:
-    - targetCorrespondingSourceObject: {fileID: 1408581670749804, guid: f9a741bb8762344c6a2a9cb4217ef728,
-        type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 1228612235}
+    m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: f9a741bb8762344c6a2a9cb4217ef728, type: 3}
 --- !u!1 &493140357
 GameObject:
@@ -1093,26 +1090,6 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 28}
   m_Pivot: {x: 0.5, y: 1}
---- !u!1 &536402904 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 1733945558841920, guid: 300f80108a63f48618cb4a1c8b8c1e86,
-    type: 3}
-  m_PrefabInstance: {fileID: 2081465037}
-  m_PrefabAsset: {fileID: 0}
---- !u!114 &536402908
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 536402904}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c408a00c6064b4e608780dfc0b001087, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  rotationSpeed: 5
-  speedSlider: {fileID: 0}
 --- !u!1 &537926110
 GameObject:
   m_ObjectHideFlags: 0
@@ -1171,7 +1148,6 @@ GameObject:
   - component: {fileID: 570167557}
   - component: {fileID: 570167556}
   - component: {fileID: 570167555}
-  - component: {fileID: 570167554}
   - component: {fileID: 570167553}
   m_Layer: 0
   m_Name: CAMERA
@@ -1224,18 +1200,6 @@ MonoBehaviour:
     m_MipBias: 0
     m_VarianceClampScale: 0.9
     m_ContrastAdaptiveSharpening: 0
---- !u!114 &570167554
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 570167552}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: be141c0ce45284d7f81dda2ed97de6d4, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!81 &570167555
 AudioListener:
   m_ObjectHideFlags: 0
@@ -3702,26 +3666,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1206103549}
   m_CullTransparentMesh: 1
---- !u!1 &1228612234 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 1408581670749804, guid: f9a741bb8762344c6a2a9cb4217ef728,
-    type: 3}
-  m_PrefabInstance: {fileID: 336486716}
-  m_PrefabAsset: {fileID: 0}
---- !u!114 &1228612235
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1228612234}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c408a00c6064b4e608780dfc0b001087, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  rotationSpeed: 1
-  speedSlider: {fileID: 0}
 --- !u!1 &1249358215
 GameObject:
   m_ObjectHideFlags: 0
@@ -6989,11 +6933,7 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents:
-    - targetCorrespondingSourceObject: {fileID: 1733945558841920, guid: 300f80108a63f48618cb4a1c8b8c1e86,
-        type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 536402908}
+    m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 300f80108a63f48618cb4a1c8b8c1e86, type: 3}
 --- !u!1 &2086536417
 GameObject:

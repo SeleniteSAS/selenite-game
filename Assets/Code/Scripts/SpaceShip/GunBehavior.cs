@@ -21,6 +21,10 @@ public class GunBehavior : MonoBehaviour
     [SerializeField] private TextMeshProUGUI textWeapon;
     [SerializeField] private TextMeshProUGUI textCharge;
 
+    [Header("=== Targeting ===")]
+    [SerializeField] private RectTransform uiCursor;
+    [SerializeField] private Canvas canvas;
+
     [Header("=== Charge System ===")]
     [SerializeField] private float charge = 100f;
     [SerializeField] private bool chargeSystemEnabled = true;
@@ -67,6 +71,7 @@ public class GunBehavior : MonoBehaviour
     private void HandleShooting()
     {
         if (charge <= 0 && chargeSystemEnabled) return;
+
         switch (currentWeapon)
         {
             case 0:
@@ -76,6 +81,7 @@ public class GunBehavior : MonoBehaviour
                 ShootLaserBall();
                 break;
         }
+
         PlayShootSound();
 
         if (!chargeSystemEnabled) return;
@@ -86,27 +92,44 @@ public class GunBehavior : MonoBehaviour
 
     private void ShootLaser()
     {
-        Instantiate(bullet, laserOrigin1.position, laserOrigin1.rotation);
-        Instantiate(bullet, laserOrigin2.position, laserOrigin2.rotation);
+        var direction1 = GetCursorPosition() - laserOrigin1.position;
+        var direction2 = GetCursorPosition() - laserOrigin2.position;
+
+        var bullet1 = Instantiate(bullet, laserOrigin1.position, Quaternion.LookRotation(direction1));
+        var bullet2 = Instantiate(bullet, laserOrigin2.position, Quaternion.LookRotation(direction2));
+
+        bullet1.GetComponent<BulletBehavior>().damage = damage;
+        bullet2.GetComponent<BulletBehavior>().damage = damage;
     }
 
     private void ShootLaserBall()
     {
-        var laserBall = Instantiate(laserBallPrefab, laserBallSpawnPoint.position, laserBallSpawnPoint.rotation);
+        var direction = GetCursorPosition() - laserBallSpawnPoint.position;
+
+        var laserBall = Instantiate(laserBallPrefab, laserBallSpawnPoint.position, Quaternion.LookRotation(direction));
         var rb = laserBall.GetComponent<Rigidbody>();
+
         if (rb)
         {
-            rb.AddForce(playerCamera.transform.forward * laserBallSpeed, ForceMode.VelocityChange);
+            rb.velocity = direction * laserBallSpeed;
         }
+
         laserBall.GetComponent<LaserBall>().damage = alternateWeaponDamage;
     }
 
     private void PlayShootSound()
     {
-        if (!shootSound.isPlaying && (charge > 0 || !chargeSystemEnabled))
+        if (charge > 0 || !chargeSystemEnabled)
         {
-            shootSound.Play();
+            shootSound.PlayOneShot(shootSound.clip);
         }
+    }
+
+    private Vector3 GetCursorPosition()
+    {
+        var position = canvas.worldCamera.WorldToScreenPoint(uiCursor.position);
+        position.z = (canvas.transform.position - canvas.worldCamera.transform.position).magnitude;
+        return canvas.worldCamera.ScreenToWorldPoint(position);
     }
 
     private void UpdateWeaponText()

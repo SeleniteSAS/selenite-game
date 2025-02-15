@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 8960222598306284798}
   - component: {fileID: 2399150250004939658}
   - component: {fileID: 3205011709659693545}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: Point Light
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -131,9 +131,9 @@ GameObject:
   - component: {fileID: 5241834675082280159}
   - component: {fileID: 8949075342187113456}
   - component: {fileID: 6569991421379595251}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: Bullet
-  m_TagString: Untagged
+  m_TagString: PacificBullet
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -270,7 +270,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 623aaf90507a63d41b4ff2e436733a80, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  lifetime: 1
+  lifetime: 50
+  damage: 10
   explosion: {fileID: 159918, guid: a0040bf7072bc2f4e82d887d50a9c5e2, type: 3}
 --- !u!54 &8949075342187113456
 Rigidbody:

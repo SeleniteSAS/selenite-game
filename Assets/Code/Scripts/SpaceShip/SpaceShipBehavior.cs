@@ -28,6 +28,7 @@ public class SpaceShipBehavior : MonoBehaviour
     [SerializeField] private RectTransform aimZone;
     [SerializeField] private AudioSource spaceshipEngineSound;
     [SerializeField] private RectTransform cursor;
+    [SerializeField] private RectTransform fakeCursor;
     [SerializeField] private Image boostBar;
     [SerializeField] private Material shootingLight;
 
@@ -47,9 +48,6 @@ public class SpaceShipBehavior : MonoBehaviour
         rb.drag = 0.3f;
         rb.angularDrag = 2f;
 
-        Cursor.lockState = CursorLockMode.Confined;
-        Cursor.visible = false;
-
         currentBoostAmount = maxBoostAmount;
         UpdateBoostUI();
     }
@@ -67,6 +65,10 @@ public class SpaceShipBehavior : MonoBehaviour
     private void HandleMouseControl()
     {
         cursor.anchoredPosition = new Vector2(
+            Mathf.Clamp(cursor.anchoredPosition.x + mouseDelta.x, -aimZone.sizeDelta.x / 2, aimZone.sizeDelta.x / 2),
+            Mathf.Clamp(cursor.anchoredPosition.y + mouseDelta.y, -aimZone.sizeDelta.y / 2, aimZone.sizeDelta.y / 2)
+        );
+        fakeCursor.anchoredPosition = new Vector2(
             Mathf.Clamp(cursor.anchoredPosition.x + mouseDelta.x, -aimZone.sizeDelta.x / 2, aimZone.sizeDelta.x / 2),
             Mathf.Clamp(cursor.anchoredPosition.y + mouseDelta.y, -aimZone.sizeDelta.y / 2, aimZone.sizeDelta.y / 2)
         );
