@@ -187,6 +187,8 @@ GameObject:
   - component: {fileID: 883139539751196463}
   - component: {fileID: 3520275370052023145}
   - component: {fileID: 1674397332189947511}
+  - component: {fileID: 8055613243726313352}
+  - component: {fileID: 4588769356464804721}
   m_Layer: 0
   m_Name: Flying Wing
   m_TagString: Enemy
@@ -204,7 +206,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 2, y: 2, z: 2}
+  m_LocalScale: {x: 20, y: 20, z: 20}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 8320797897630410160}
@@ -227,14 +229,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   player: {fileID: 0}
-  moveSpeed: 5
-  stoppingDistance: 10
+  moveSpeed: 50
+  stoppingDistance: 20
   fireRate: 2
-  enemyLaserPrefab: {fileID: 7943439706011594771, guid: c6f772caad3e945fa8103933b7c02f4e,
+  enemyLaserPrefab: {fileID: 7943439706011594771, guid: 8fe8035622fd34f73a29f81e154bb9ed,
     type: 3}
   firePoint1: {fileID: 3428022861227064361}
   firePoint2: {fileID: 3216111036037820240}
-  bulletSpeed: 500
+  bulletSpeed: 1500
   detectionRange: 10000
 --- !u!114 &1674397332189947511
 MonoBehaviour:
@@ -249,6 +251,39 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   maxHealth: 100
+--- !u!65 &8055613243726313352
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5566054609203705026}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 22.05, y: 4.75, z: 12.02}
+  m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &4588769356464804721
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5566054609203705026}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e1d9af2a4c194e08b248ff775f09b865, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &6532431573077475560
 GameObject:
   m_ObjectHideFlags: 0
@@ -526,11 +561,7 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents:
-    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 9ccf1118b187ac14a950742df325632f,
-        type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 1807972036238010157}
+    m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 9ccf1118b187ac14a950742df325632f, type: 3}
 --- !u!4 &8320797897630410160 stripped
 Transform:
@@ -538,30 +569,3 @@ Transform:
     type: 3}
   m_PrefabInstance: {fileID: 8427309019482194523}
   m_PrefabAsset: {fileID: 0}
---- !u!1 &8661188677694897930 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: 9ccf1118b187ac14a950742df325632f,
-    type: 3}
-  m_PrefabInstance: {fileID: 8427309019482194523}
-  m_PrefabAsset: {fileID: 0}
---- !u!65 &1807972036238010157
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8661188677694897930}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 0
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 3
-  m_Size: {x: 22.05, y: 4.75, z: 12.02}
-  m_Center: {x: 0, y: 0, z: 0}

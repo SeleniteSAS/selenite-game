@@ -58,7 +58,7 @@ public class WaveManager : MonoBehaviour
     {
         var spawnPosition = new Vector3(
             Random.Range(spawnAreaMin.x, spawnAreaMax.x),
-            0f,
+            500f,
             Random.Range(spawnAreaMin.y, spawnAreaMax.y)
         );
 

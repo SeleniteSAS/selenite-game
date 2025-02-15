@@ -795,7 +795,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &5660408479153196848
 Transform:
   m_ObjectHideFlags: 0
@@ -1807,22 +1807,22 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3544d305b590247fca5d50feb7aa2551, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  thrustForce: 120
+  thrustForce: 150
   boostMultiplier: 20
-  maxSpeed: 100
-  verticalThrust: 50
-  rotationSpeed: 20
+  maxSpeed: 1000
+  verticalThrust: 30
+  rotationSpeed: 50
   rollIntensity: 300
-  rollResetTime: 1
-  maxBoostAmount: 100
+  rollResetTime: 0.2
+  maxBoostAmount: 200
   boostConsumptionRate: 20
-  boostRechargeRate: 10
+  boostRechargeRate: 20
   mouseSensitivity: 20
   aimZone: {fileID: 0}
   spaceshipEngineSound: {fileID: 6648499969254936230}
   cursor: {fileID: 0}
+  fakeCursor: {fileID: 0}
   boostBar: {fileID: 0}
-  shootingLight: {fileID: 2100000, guid: afdb649f788e34c2c9451274869ad7ed, type: 2}
 --- !u!114 &1741264729862327751
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1852,7 +1852,7 @@ MonoBehaviour:
   playerCamera: {fileID: 0}
   laserOrigin1: {fileID: 8004294576279038181}
   laserOrigin2: {fileID: 282702436064049478}
-  fireRate: 0.2
+  fireRate: 0.1
   explosion: {fileID: 159918, guid: a0040bf7072bc2f4e82d887d50a9c5e2, type: 3}
   bullet: {fileID: 4813966631049036289, guid: 858b3e827fde309489615c6daec4fab1, type: 3}
   shootSound: {fileID: 584451054889442973}
@@ -2084,7 +2084,7 @@ AudioSource:
   OutputAudioMixerGroup: {fileID: 0}
   m_audioClip: {fileID: 8300000, guid: b93a288f9a53c48768c3d31dc185b83d, type: 3}
   m_PlayOnAwake: 0
-  m_Volume: 0.778
+  m_Volume: 0.307
   m_Pitch: 1
   Loop: 0
   Mute: 0

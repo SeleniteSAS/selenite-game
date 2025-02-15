@@ -55,7 +55,9 @@ QualitySettings:
     terrainBillboardStart: 50
     terrainFadeLength: 5
     terrainMaxTrees: 50
-    excludedTargetPlatforms: []
+    excludedTargetPlatforms:
+    - Standalone
+    - Server
   - serializedVersion: 3
     name: Balanced
     pixelLightCount: 1
@@ -105,7 +107,9 @@ QualitySettings:
     terrainBillboardStart: 50
     terrainFadeLength: 5
     terrainMaxTrees: 50
-    excludedTargetPlatforms: []
+    excludedTargetPlatforms:
+    - Server
+    - Standalone
   - serializedVersion: 3
     name: High Fidelity
     pixelLightCount: 2
@@ -129,7 +133,7 @@ QualitySettings:
     billboardsFaceCameraPosition: 1
     useLegacyDetailDistribution: 1
     vSyncCount: 1
-    realtimeGICPUUsage: 25
+    realtimeGICPUUsage: 75
     lodBias: 2
     maximumLODLevel: 0
     enableLODCrossFade: 1
@@ -166,7 +170,7 @@ QualitySettings:
     Nintendo Switch: 2
     PS4: 2
     PS5: 2
-    Server: 0
+    Server: 1
     Stadia: 2
     Standalone: 2
     WebGL: 1

@@ -30,7 +30,6 @@ public class SpaceShipBehavior : MonoBehaviour
     [SerializeField] private RectTransform cursor;
     [SerializeField] private RectTransform fakeCursor;
     [SerializeField] private Image boostBar;
-    [SerializeField] private Material shootingLight;
 
     private Rigidbody rb;
     private float thrustInput;
@@ -89,7 +88,6 @@ public class SpaceShipBehavior : MonoBehaviour
         }
 
         spaceshipEngineSound.pitch = 0.8f + Mathf.Abs(verticalThrust * 0.01f);
-        shootingLight.SetColor("_EmissionColor", new Vector4(0,255,255) * (Mathf.Abs(verticalThrust) * 0.0009f + 0.005f));
 
         rb.AddForce(transform.forward * (thrustInput * currentThrust));
         rb.velocity = Vector3.ClampMagnitude(rb.velocity, maxSpeed);
