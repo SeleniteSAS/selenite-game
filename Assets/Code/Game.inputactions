@@ -60,9 +60,9 @@
                     "initialStateCheck": false
                 },
                 {
-                    "name": "Switch Weapon",
+                    "name": "Zoom",
                     "type": "Button",
-                    "id": "e54fae11-eb2a-4713-b8c9-ad132d3e4ad0",
+                    "id": "73e11fcc-9ecb-438d-88f6-23ea05608d83",
                     "expectedControlType": "",
                     "processors": "",
                     "interactions": "",
@@ -336,23 +336,23 @@
                 },
                 {
                     "name": "",
-                    "id": "409e74e1-460c-4049-9c53-62e8ed5c952e",
-                    "path": "<Keyboard>/tab",
+                    "id": "4b0a8f22-4e0a-4452-b680-88ba34923df9",
+                    "path": "<Mouse>/rightButton",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "Switch Weapon",
+                    "action": "Zoom",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
                 {
                     "name": "",
-                    "id": "a22bdd5a-d6cf-4cdf-aaf9-b5073d5f1df3",
-                    "path": "<Gamepad>/buttonWest",
+                    "id": "28ab6d2f-1336-4da6-8f30-6ce43f529421",
+                    "path": "<Gamepad>/select",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "Switch Weapon",
+                    "action": "Zoom",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

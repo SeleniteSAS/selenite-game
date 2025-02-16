@@ -10,8 +10,8 @@ public class WaveManager : MonoBehaviour
     [SerializeField] private TextMeshProUGUI waveMessage;
     [SerializeField] private float outpostCount = 8;
     [SerializeField] private GameObject shield;
-    [SerializeField] private Vector2 spawnAreaMin;
-    [SerializeField] private Vector2 spawnAreaMax;
+    [SerializeField] private Vector3 spawnAreaMin;
+    [SerializeField] private Vector3 spawnAreaMax;
 
     private int currentWave;
     private int enemiesPerWave;
@@ -58,8 +58,8 @@ public class WaveManager : MonoBehaviour
     {
         var spawnPosition = new Vector3(
             Random.Range(spawnAreaMin.x, spawnAreaMax.x),
-            500f,
-            Random.Range(spawnAreaMin.y, spawnAreaMax.y)
+            Random.Range(spawnAreaMin.y, spawnAreaMax.y),
+            Random.Range(spawnAreaMin.z, spawnAreaMax.z)
         );
 
         var enemyIndex = GetEnemyIndexForWave();

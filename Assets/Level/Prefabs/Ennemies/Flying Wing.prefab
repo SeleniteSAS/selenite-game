@@ -229,15 +229,23 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   player: {fileID: 0}
-  moveSpeed: 50
-  stoppingDistance: 20
-  fireRate: 2
+  detectionRange: 100000
+  maxSpeed: 400
+  minSpeed: 70
+  rotationSpeed: 200
+  optimalCombatDistance: 5000
+  evasionThreshold: 10
   enemyLaserPrefab: {fileID: 7943439706011594771, guid: 8fe8035622fd34f73a29f81e154bb9ed,
     type: 3}
-  firePoint1: {fileID: 3428022861227064361}
-  firePoint2: {fileID: 3216111036037820240}
-  bulletSpeed: 1500
-  detectionRange: 10000
+  firePoints:
+  - {fileID: 3216111036037820240}
+  - {fileID: 3428022861227064361}
+  bulletSpeed: 2000
+  baseFireRate: 0.05
+  shotsPerBurst: 3
+  timeBetweenShots: 0.05
+  healthThresholdForRetreat: 0.2
+  damage: 15
 --- !u!114 &1674397332189947511
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -250,7 +258,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c2a81b93259fd47a5a744215d9f50401, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxHealth: 100
+  maxHealth: 150
+  currentHealth: 0
 --- !u!65 &8055613243726313352
 BoxCollider:
   m_ObjectHideFlags: 0

@@ -175,7 +175,7 @@ TrailRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: afdb649f788e34c2c9451274869ad7ed, type: 2}
+  - {fileID: 2100000, guid: 176aac1627b0447d8b9c7a595f3ce3a0, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -279,10 +279,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 623aaf90507a63d41b4ff2e436733a80, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  lifetime: 50
+  lifetime: 10
   damage: 10
-  explosion: {fileID: 159918, guid: a0040bf7072bc2f4e82d887d50a9c5e2, type: 3}
-  speed: 3
+  explosion: {fileID: 159918, guid: 477a4f63862cdc247b84d50b67801e52, type: 3}
+  speed: 4
 --- !u!54 &8949075342187113456
 Rigidbody:
   m_ObjectHideFlags: 0

@@ -15,7 +15,6 @@ public class GunBehavior : MonoBehaviour
 
     [Header("=== Weapon Settings ===")]
     [SerializeField] private int damage = 10;
-    [SerializeField] private int alternateWeaponDamage = 30;
 
     [Header("=== UI Elements ===")]
     [SerializeField] private TextMeshProUGUI textWeapon;
@@ -29,14 +28,8 @@ public class GunBehavior : MonoBehaviour
     [SerializeField] private float charge = 100f;
     [SerializeField] private bool chargeSystemEnabled = true;
 
-    [Header("=== Laser Ball Settings ===")]
-    [SerializeField] private GameObject laserBallPrefab;
-    [SerializeField] private Transform laserBallSpawnPoint;
-    [SerializeField] private float laserBallSpeed = 20f;
-
     private float fireTimer;
     private bool shooting;
-    private int currentWeapon;
 
     private void Start()
     {
@@ -61,27 +54,10 @@ public class GunBehavior : MonoBehaviour
         shooting = false;
     }
 
-    private void SwitchWeapon()
-    {
-        currentWeapon = (currentWeapon + 1) % 2;
-        damage = (currentWeapon == 0) ? damage : alternateWeaponDamage;
-        UpdateWeaponText();
-    }
-
     private void HandleShooting()
     {
         if (charge <= 0 && chargeSystemEnabled) return;
-
-        switch (currentWeapon)
-        {
-            case 0:
-                ShootLaser();
-                break;
-            case 1:
-                ShootLaserBall();
-                break;
-        }
-
+        ShootLaser();
         PlayShootSound();
 
         if (!chargeSystemEnabled) return;
@@ -102,21 +78,6 @@ public class GunBehavior : MonoBehaviour
         bullet2.GetComponent<BulletBehavior>().damage = damage;
     }
 
-    private void ShootLaserBall()
-    {
-        var direction = GetCursorPosition() - laserBallSpawnPoint.position;
-
-        var laserBall = Instantiate(laserBallPrefab, laserBallSpawnPoint.position, Quaternion.LookRotation(direction));
-        var rb = laserBall.GetComponent<Rigidbody>();
-
-        if (rb)
-        {
-            rb.velocity = direction * laserBallSpeed;
-        }
-
-        laserBall.GetComponent<LaserBall>().damage = alternateWeaponDamage;
-    }
-
     private void PlayShootSound()
     {
         if (charge > 0 || !chargeSystemEnabled)
@@ -134,7 +95,7 @@ public class GunBehavior : MonoBehaviour
 
     private void UpdateWeaponText()
     {
-        textWeapon.text = currentWeapon == 0 ? "Laser" : "Laser Ball";
+        textWeapon.text = "Laser";
     }
 
     private void UpdateChargeText()
@@ -148,6 +109,5 @@ public class GunBehavior : MonoBehaviour
         if (context.performed) StartShooting();
         else if (context.canceled) StopShooting();
     }
-    public void OnSwitchWeapon(InputAction.CallbackContext context) => SwitchWeapon();
     #endregion
 }

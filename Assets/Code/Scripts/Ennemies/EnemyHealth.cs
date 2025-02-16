@@ -2,12 +2,12 @@ using UnityEngine;
 
 public class EnemyHealth : MonoBehaviour
 {
-    [SerializeField] private int maxHealth = 100;
+    [SerializeField] public int maxHealth = 100;
 
-    private int currentHealth;
+    public int currentHealth;
     private WaveManager waveManager;
 
-    private void Start()
+    private void Awake()
     {
         currentHealth = maxHealth;
         waveManager = FindObjectOfType<WaveManager>();

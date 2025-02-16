@@ -11,9 +11,7 @@ public class TargetObject : MonoBehaviour
         {
             ui = GameObject.Find("WAVE MANAGER").GetComponent<UIController>();
         }
-
         if (ui == null) Debug.LogError("No UIController component found");
-
         ui.AddTargetIndicator(gameObject);
     }
 
@@ -24,9 +22,7 @@ public class TargetObject : MonoBehaviour
         {
             ui = GameObject.Find("WAVE MANAGER").GetComponent<UIController>();
         }
-
-        if (ui == null) Debug.LogError("No UIController component found");
-
+        if (ui == null) Destroy(gameObject);
         ui.RemoveTargetIndicator(gameObject);
     }
 }

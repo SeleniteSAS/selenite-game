@@ -3,13 +3,8 @@ using UnityEngine.SceneManagement;
 
 public class GamePauseManager : MonoBehaviour
 {
-    [SerializeField] private bool isPaused = false;
-
-    private void Start()
-    {
-        Cursor.lockState = CursorLockMode.Locked;
-        Cursor.visible = false;
-    }
+    [SerializeField] public bool isPaused;
+    [SerializeField] private GameObject pauseMenu;
 
     private void Update()
     {
@@ -26,19 +21,31 @@ public class GamePauseManager : MonoBehaviour
 
     private void PauseGame()
     {
+        if (isPaused) return;
         isPaused = true;
         Time.timeScale = 0;
-        SceneManager.LoadScene("MenuPause", LoadSceneMode.Additive);
+        pauseMenu.SetActive(true);
         Cursor.lockState = CursorLockMode.None;
         Cursor.visible = true;
     }
 
-    private void ResumeGame()
+    public void ResumeGame()
     {
+        if (!isPaused) return;
         isPaused = false;
         Time.timeScale = 1;
-        SceneManager.UnloadSceneAsync("MenuPause");
+        pauseMenu.SetActive(false);
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
+    }
+
+    public void ChangeScene(string sceneName)
+    {
+        SceneManager.LoadScene(sceneName);
+    }
+
+    public void Quit()
+    {
+        Application.Quit();
     }
 }
