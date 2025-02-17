@@ -10,10 +10,11 @@ EditorBuildSettings:
     guid: 66b15b60e35714855a7d6ae193cfc30c
   - enabled: 1
     path: Assets/Level/Scenes/Game/Game.unity
-    guid: 680a15281d6c642dda5bf0136e31abc6
-  - enabled: 1
-    path: Assets/Level/Scenes/MenuPause.unity
-    guid: 5f470c573d23c4051a52aae6b2efe7cb
+    guid: 565680837a26f42faba608b7bc4a4c29
   m_configObjects:
+    com.unity.adaptiveperformance.loader_settings: {fileID: 11400000, guid: 6c934dcf71bf84a308b910986543aff4,
+      type: 2}
+    com.unity.adaptiveperformance.simulator.provider_settings: {fileID: 11400000,
+      guid: 5c87ca13afe884bc9b2f04ad668ecc11, type: 2}
     com.unity.input.settings: {fileID: 11400000, guid: c696e89ae21e84cba8bea864878d3577,
       type: 2}

@@ -188,9 +188,10 @@ GameObject:
   - component: {fileID: 6775384291461338899}
   - component: {fileID: 2100518451978741317}
   - component: {fileID: 2119052191411917860}
+  - component: {fileID: 4770982200087447033}
   m_Layer: 0
   m_Name: Barrel Wings
-  m_TagString: Untagged
+  m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -205,7 +206,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 2, y: 2, z: 2}
+  m_LocalScale: {x: 20, y: 20, z: 20}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 8776700053404513034}
@@ -228,15 +229,22 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   player: {fileID: 0}
-  moveSpeed: 5
-  stoppingDistance: 10
-  fireRate: 2
+  detectionRange: 50000
+  maxSpeed: 200
+  rotationSpeed: 200
+  optimalCombatDistance: 1000
+  evasionThreshold: 10
   enemyLaserPrefab: {fileID: 7943439706011594771, guid: 8fe8035622fd34f73a29f81e154bb9ed,
     type: 3}
-  firePoint1: {fileID: 223463828225319439}
-  firePoint2: {fileID: 5291040174516301375}
-  bulletSpeed: 500
-  detectionRange: 10000
+  firePoints:
+  - {fileID: 223463828225319439}
+  - {fileID: 5291040174516301375}
+  bulletSpeed: 1500
+  baseFireRate: 0.07
+  shotsPerBurst: 3
+  timeBetweenShots: 0.07
+  healthThresholdForRetreat: 0.1
+  damage: 10
 --- !u!114 &2100518451978741317
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -249,7 +257,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c2a81b93259fd47a5a744215d9f50401, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxHealth: 100
+  maxHealth: 200
+  currentHealth: 0
 --- !u!65 &2119052191411917860
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -271,6 +280,18 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 25.01, y: 5.85, z: 13.69}
   m_Center: {x: 0, y: 0, z: 1.3}
+--- !u!114 &4770982200087447033
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4026441106759498279}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e1d9af2a4c194e08b248ff775f09b865, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &6936868480825978858
 GameObject:
   m_ObjectHideFlags: 0

@@ -1,8 +1,8 @@
-using System.Collections;
 using Cinemachine;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.UI;
+using Debug = System.Diagnostics.Debug;
 
 [RequireComponent(typeof(Rigidbody))]
 public class SpaceShipBehavior : MonoBehaviour
@@ -16,20 +16,29 @@ public class SpaceShipBehavior : MonoBehaviour
     [SerializeField] private float rollIntensity = 10f;
     [SerializeField] private float rollResetTime = 3f;
 
+    [Header("=== Camera Settings ===")]
+    [SerializeField] private CinemachineVirtualCamera virtualCamera;
+    [SerializeField] private float normalFOV = 80f;
+    [SerializeField] private float zoomedFOV = 50f;
+    [SerializeField] private float zoomSpeed = 20f;
+
     [Header("=== Boost Settings ===")]
     [SerializeField] private float maxBoostAmount = 100f;
     [SerializeField] private float boostConsumptionRate = 20f;
     [SerializeField] private float boostRechargeRate = 10f;
 
     [Header("=== Mouse Settings ===")]
-    [SerializeField] private float mouseSensitivity = 5f;
+    [SerializeField] private float mouseSensitivity = 1f;
 
     [Header("=== UI Elements ===")]
     [SerializeField] private RectTransform aimZone;
     [SerializeField] private AudioSource spaceshipEngineSound;
     [SerializeField] private RectTransform cursor;
+    [SerializeField] private RectTransform fakeCursor;
     [SerializeField] private Image boostBar;
-    [SerializeField] private Material shootingLight;
+
+    [Header("=== VFX ===")]
+    [SerializeField] private ParticleSystem boostVFX;
 
     private Rigidbody rb;
     private float thrustInput;
@@ -39,18 +48,34 @@ public class SpaceShipBehavior : MonoBehaviour
     private float rollResetTimer;
     private float verticalInput;
     private float currentBoostAmount;
+    private bool isZooming;
+    private float currentFOV;
 
     private void Start()
     {
+        Time.timeScale = 1;
+
         rb = GetComponent<Rigidbody>();
         rb.useGravity = false;
         rb.drag = 0.3f;
         rb.angularDrag = 2f;
 
-        Cursor.lockState = CursorLockMode.Confined;
+        Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
-
         currentBoostAmount = maxBoostAmount;
+
+        if (virtualCamera == null)
+        {
+            virtualCamera = FindObjectOfType<CinemachineVirtualCamera>();
+            if (virtualCamera == null)
+            {
+                Debug.Assert(false, "Virtual Camera not found in the scene!");
+                return;
+            }
+        }
+        currentFOV = normalFOV;
+        virtualCamera.m_Lens.FieldOfView = currentFOV;
+
         UpdateBoostUI();
     }
 
@@ -61,19 +86,35 @@ public class SpaceShipBehavior : MonoBehaviour
         HandleVerticalMovement();
         HandleRoll();
         HandleRollReset();
+        HandleZoom();
         RechargeBoost();
     }
 
     private void HandleMouseControl()
     {
-        cursor.anchoredPosition = new Vector2(
-            Mathf.Clamp(cursor.anchoredPosition.x + mouseDelta.x, -aimZone.sizeDelta.x / 2, aimZone.sizeDelta.x / 2),
-            Mathf.Clamp(cursor.anchoredPosition.y + mouseDelta.y, -aimZone.sizeDelta.y / 2, aimZone.sizeDelta.y / 2)
-        );
+        var currentSensitivity = isZooming ? mouseSensitivity * 0.5f : mouseSensitivity;
 
-        rb.AddRelativeTorque(new Vector3(-mouseDelta.y * rotationSpeed, mouseDelta.x * rotationSpeed, 0));
+        cursor.anchoredPosition = new Vector2(
+            Mathf.Clamp(cursor.anchoredPosition.x + mouseDelta.x * currentSensitivity, -aimZone.sizeDelta.x / 2, aimZone.sizeDelta.x / 2),
+            Mathf.Clamp(cursor.anchoredPosition.y + mouseDelta.y * currentSensitivity, -aimZone.sizeDelta.y / 2, aimZone.sizeDelta.y / 2)
+        );
+        fakeCursor.anchoredPosition = cursor.anchoredPosition;
+
+        rb.AddRelativeTorque(new Vector3(
+            -mouseDelta.y * rotationSpeed * currentSensitivity,
+            mouseDelta.x * rotationSpeed * currentSensitivity,
+            0));
 
         mouseDelta = Vector2.zero;
+    }
+
+    private void HandleZoom()
+    {
+        if (!virtualCamera) return;
+
+        var targetFOV = isZooming ? zoomedFOV : normalFOV;
+        currentFOV = Mathf.Lerp(currentFOV, targetFOV, Time.fixedDeltaTime * zoomSpeed);
+        virtualCamera.m_Lens.FieldOfView = currentFOV;
     }
 
     private void HandleThrust()
@@ -87,10 +128,10 @@ public class SpaceShipBehavior : MonoBehaviour
         }
 
         spaceshipEngineSound.pitch = 0.8f + Mathf.Abs(verticalThrust * 0.01f);
-        shootingLight.SetColor("_EmissionColor", new Vector4(0,255,255) * (Mathf.Abs(verticalThrust) * 0.0009f + 0.005f));
 
-        rb.AddForce(transform.forward * (thrustInput * currentThrust));
+        rb.AddRelativeForce(Vector3.forward * (currentThrust * thrustInput));
         rb.velocity = Vector3.ClampMagnitude(rb.velocity, maxSpeed);
+
         UpdateBoostUI();
     }
 
@@ -146,5 +187,6 @@ public class SpaceShipBehavior : MonoBehaviour
     }
     public void OnRoll(InputAction.CallbackContext context) => rollInput = context.ReadValue<float>();
     public void OnVerticalMove(InputAction.CallbackContext context) => verticalInput = context.ReadValue<float>();
+    public void OnZoom(InputAction.CallbackContext context) => isZooming = context.performed;
     #endregion
 }

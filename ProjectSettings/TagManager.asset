@@ -5,15 +5,19 @@ TagManager:
   serializedVersion: 2
   tags:
   - Enemy
+  - Manager
+  - TrackingObject
+  - Actors
+  - PacificBullet
   layers:
   - Default
   - TransparentFX
   - Ignore Raycast
-  - 
+  - Pacific Bullet
   - Water
   - UI
-  - 
-  - 
+  - PostProcess
+  - Enemy Bullet
   - 
   - 
   - 

@@ -13,7 +13,6 @@ public class ExplosionLifetime : MonoBehaviour
     private void Update()
     {
         timer += Time.deltaTime;
-
         if(timer >= lifetime){
             Destroy(gameObject);
         }

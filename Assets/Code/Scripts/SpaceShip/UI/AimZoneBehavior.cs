@@ -4,6 +4,8 @@ public class AimZoneBehavior : MonoBehaviour
 {
     [Header("=== UI Elements ===")]
     [SerializeField] private RectTransform aimZone;
+    [SerializeField] private RectTransform aimZoneDecorator;
+
 
     [Header("=== Aim Zone Settings ===")]
     [Range(0.1f, 1f)]
@@ -25,5 +27,6 @@ public class AimZoneBehavior : MonoBehaviour
         var zoneHeight = screenHeight * heightPercentage;
 
         aimZone.sizeDelta = new Vector2(zoneWidth, zoneHeight);
+        aimZoneDecorator.sizeDelta = new Vector2(zoneWidth, zoneHeight);
     }
 }
