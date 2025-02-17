@@ -1,9 +1,19 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 public class TargetObject : MonoBehaviour
 {
+    private enum TargetType
+    {
+        Enemy,
+        Outpost
+    }
+
+    [SerializeField] private TargetType type;
+
     private void Awake()
     {
         var ui = GetComponentInParent<UIController>();
@@ -12,10 +22,20 @@ public class TargetObject : MonoBehaviour
             ui = GameObject.Find("WAVE MANAGER").GetComponent<UIController>();
         }
         if (ui == null) Debug.LogError("No UIController component found");
-        ui.AddTargetIndicator(gameObject);
+        switch (type)
+        {
+            case TargetType.Enemy:
+                ui.AddTargetIndicator(gameObject);
+                break;
+            case TargetType.Outpost:
+                ui.AddOutpostIndicator(gameObject);
+                break;
+            default:
+                throw new ArgumentOutOfRangeException();
+        }
     }
 
-    private void OnDestroy()
+    public void OnDestroy()
     {
         var ui = GetComponentInParent<UIController>();
         if(ui == null)
@@ -23,6 +43,16 @@ public class TargetObject : MonoBehaviour
             ui = GameObject.Find("WAVE MANAGER").GetComponent<UIController>();
         }
         if (ui == null) Destroy(gameObject);
-        ui.RemoveTargetIndicator(gameObject);
+        switch (type)
+        {
+            case TargetType.Enemy:
+                ui.RemoveTargetIndicator(gameObject);
+                break;
+            case TargetType.Outpost:
+                ui.RemoveOutpostIndicator(gameObject);
+                break;
+            default:
+                throw new ArgumentOutOfRangeException();
+        }
     }
 }
