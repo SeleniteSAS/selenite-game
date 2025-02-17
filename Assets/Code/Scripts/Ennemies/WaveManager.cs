@@ -23,7 +23,14 @@ public class WaveManager : MonoBehaviour
     private void Start()
     {
         UpdateHUD();
-        StartCoroutine(StartNextWave());
+        currentWave++;
+        waveMessage.text = "Vague 1";
+        enemiesPerWave = currentWave * 2;
+        enemiesRemaining = enemiesPerWave;
+        for (var i = 0; i < enemiesPerWave; i++)
+        {
+            SpawnEnemy();
+        }
     }
 
     private IEnumerator StartNextWave()
