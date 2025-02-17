@@ -407,7 +407,6 @@ MonoBehaviour:
   player: {fileID: 0}
   detectionRange: 10000
   maxSpeed: 100
-  minSpeed: 5
   rotationSpeed: 200
   optimalCombatDistance: 2000
   evasionThreshold: 20
@@ -420,8 +419,8 @@ MonoBehaviour:
   baseFireRate: 0.4
   shotsPerBurst: 7
   timeBetweenShots: 0.1
-  healthThresholdForRetreat: 0.3
-  damage: 25
+  healthThresholdForRetreat: 0.1
+  damage: 40
 --- !u!114 &5488263834562234360
 MonoBehaviour:
   m_ObjectHideFlags: 0

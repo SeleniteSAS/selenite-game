@@ -129,8 +129,9 @@ public class SpaceShipBehavior : MonoBehaviour
 
         spaceshipEngineSound.pitch = 0.8f + Mathf.Abs(verticalThrust * 0.01f);
 
-        rb.AddForce(transform.forward * (thrustInput * currentThrust));
+        rb.AddRelativeForce(Vector3.forward * (currentThrust * thrustInput));
         rb.velocity = Vector3.ClampMagnitude(rb.velocity, maxSpeed);
+
         UpdateBoostUI();
     }
 

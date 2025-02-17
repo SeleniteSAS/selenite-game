@@ -40,7 +40,7 @@ public class ModeSwitcher : MonoBehaviour
         isOptionsMenuActive = true;
     }
 
-    private void CloseOptions()
+    public void CloseOptions()
     {
         optionsMenuCanvas.SetActive(false);
         baseModeCanvas.SetActive(true);

@@ -231,7 +231,6 @@ MonoBehaviour:
   player: {fileID: 0}
   detectionRange: 50000
   maxSpeed: 200
-  minSpeed: 30
   rotationSpeed: 200
   optimalCombatDistance: 1000
   evasionThreshold: 10
@@ -241,7 +240,7 @@ MonoBehaviour:
   - {fileID: 223463828225319439}
   - {fileID: 5291040174516301375}
   bulletSpeed: 1500
-  baseFireRate: 2
+  baseFireRate: 0.07
   shotsPerBurst: 3
   timeBetweenShots: 0.07
   healthThresholdForRetreat: 0.1

@@ -9,13 +9,13 @@ public class ResolutionManager : MonoBehaviour
     [SerializeField] private TMP_Dropdown qualityDropdown;
 
     private Resolution[] availableResolutions;
+    private bool isInitialized = false;
 
     private void Start()
     {
         availableResolutions = Screen.resolutions;
 
         resolutionDropdown.ClearOptions();
-
         var resolutionOptions = new List<string>();
 
         var currentResolutionIndex = 0;
@@ -29,24 +29,29 @@ public class ResolutionManager : MonoBehaviour
             {
                 currentResolutionIndex = i;
             }
+            else
+            {
+                currentResolutionIndex = 0;
+            }
         }
 
         resolutionDropdown.AddOptions(resolutionOptions);
-
         resolutionDropdown.value = currentResolutionIndex;
         resolutionDropdown.RefreshShownValue();
 
         var qualityOptions = QualitySettings.names.ToList();
         qualityDropdown.AddOptions(qualityOptions);
-
         qualityDropdown.value = QualitySettings.GetQualityLevel();
         qualityDropdown.RefreshShownValue();
+
+        isInitialized = true;
     }
 
     public void SetResolution(int resolutionIndex)
     {
-        var selectedResolution = availableResolutions[resolutionIndex];
+        if (!isInitialized) return;
 
+        var selectedResolution = availableResolutions[resolutionIndex];
         Screen.SetResolution(selectedResolution.width, selectedResolution.height, Screen.fullScreen);
     }
 
