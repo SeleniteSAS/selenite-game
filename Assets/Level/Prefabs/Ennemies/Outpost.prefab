@@ -367,6 +367,7 @@ GameObject:
   - component: {fileID: 4599596409962269196}
   - component: {fileID: 4653907912683683104}
   - component: {fileID: 7883183971106385685}
+  - component: {fileID: 3013671640078019837}
   m_Layer: 0
   m_Name: Outpost
   m_TagString: Enemy
@@ -584,6 +585,19 @@ SphereCollider:
   serializedVersion: 3
   m_Radius: 900
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &3013671640078019837
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1049170816381095832}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e1d9af2a4c194e08b248ff775f09b865, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  type: 1
 --- !u!1 &2501348038292890679
 GameObject:
   m_ObjectHideFlags: 0

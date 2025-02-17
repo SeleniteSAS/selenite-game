@@ -7,7 +7,7 @@ public class OutpostSpawn : MonoBehaviour
     private float width;
     private float coordX;
     private float coordY;
-    private float offset = 500;
+    private const float Offset = 500;
 
     public enum DifficultyLevels{
         Easy,
@@ -26,8 +26,8 @@ public class OutpostSpawn : MonoBehaviour
             for (var j = 0; j < 3; j++)
             {
                 if (j == 1 || i == 1) continue;
-                coordX = Random.Range(width/3*j+offset,width/3*(j+1)-offset);
-                coordY = Random.Range(width/3*i+offset,width/3*(i+1)-offset);
+                coordX = Random.Range(width/3*j+Offset,width/3*(j+1)-Offset);
+                coordY = Random.Range(width/3*i+Offset,width/3*(i+1)-Offset);
                 Instantiate(outpost, new Vector3(coordX,Terrain.activeTerrain.SampleHeight(new Vector3(coordX,0,coordY))+50,coordY), Quaternion.Euler(0,Random.Range(0,360),0));
             }
         }

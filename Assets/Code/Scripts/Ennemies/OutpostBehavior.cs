@@ -68,6 +68,8 @@ public class OutpostBehavior : MonoBehaviour
         Instantiate(buildingExplosion,gameObject.transform.position,Quaternion.identity);
 
         gameManager.GetComponent<WaveManager>().OutpostHandle();
+        var targetObject = gameObject.GetComponent<TargetObject>();
+        targetObject.OnDestroy();
     }
 
 }
