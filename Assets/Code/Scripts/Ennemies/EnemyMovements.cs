@@ -24,6 +24,7 @@ public class EnemyMovement : MonoBehaviour
     [SerializeField] private float timeBetweenShots = 0.1f;
     [SerializeField] private float healthThresholdForRetreat = 0.6f;
     [SerializeField] private int damage = 10;
+    [SerializeField] private float bulletDispersion = 0.002f;
 
     private float nextFireTime;
     private float nextBurstTime;
@@ -240,7 +241,7 @@ public class EnemyMovement : MonoBehaviour
         if (projectile) projectile.damage = damage;
 
         var direction = (player.position - firePoint.position).normalized;
-        direction += Random.insideUnitSphere * 0.1f;
+        direction += Random.insideUnitSphere * bulletDispersion;
         rb.AddForce(direction * bulletSpeed, ForceMode.VelocityChange);
     }
 
