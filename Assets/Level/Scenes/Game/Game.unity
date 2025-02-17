@@ -2744,7 +2744,7 @@ MonoBehaviour:
   - {fileID: 5566054609203705026, guid: e0bd76b36e8e32f4cb5fd9bdea561668, type: 3}
   - {fileID: 9177443838038124152, guid: ef6cb64950efce54c9a29840e7cfcbf4, type: 3}
   totalWaves: 10
-  timeBetweenWaves: 5
+  timeBetweenWaves: 10
   waveMessage: {fileID: 489990940}
   enemiesRemainingText: {fileID: 526376524}
   outpostsRemainingText: {fileID: 849807583}
@@ -2782,8 +2782,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   canvas: {fileID: 1821545002}
   targetIndicators: []
+  outpostIndicators: []
   MainCamera: {fileID: 1239261983}
   TargetIndicatorPrefab: {fileID: 8057716851948084983, guid: 76a3c49fd9ff43499a614e7e9a022f82,
+    type: 3}
+  OutpostIndicatorPrefab: {fileID: 8057716851948084983, guid: 24b0767432ec5448faaa38864371bb79,
     type: 3}
 --- !u!1 &489990939
 GameObject:
