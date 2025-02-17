@@ -16965,9 +16965,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   baseSkillsPoints: 0
   skillPoints: 0
-  skillsCanvas: {fileID: 0}
   skillsPointsText: {fileID: 0}
-  getSkillsPointsCanvas: {fileID: 0}
+  getSkillsPointsCanvas: {fileID: 837400066}
   getSkillsPointsSound: {fileID: 0}
 --- !u!114 &3412756477241539544
 MonoBehaviour:
