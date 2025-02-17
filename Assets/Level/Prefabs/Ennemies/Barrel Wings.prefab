@@ -245,6 +245,7 @@ MonoBehaviour:
   timeBetweenShots: 0.07
   healthThresholdForRetreat: 0.1
   damage: 10
+  bulletDispersion: 0
 --- !u!114 &2100518451978741317
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -1,6 +1,8 @@
 using UnityEngine;
 using TMPro;
 using UnityEngine.InputSystem;
+using UnityEngine.UI;
+using System.Collections;
 
 public class GunBehavior : MonoBehaviour
 {
@@ -19,6 +21,7 @@ public class GunBehavior : MonoBehaviour
     [Header("=== UI Elements ===")]
     [SerializeField] private TextMeshProUGUI textWeapon;
     [SerializeField] private TextMeshProUGUI textCharge;
+    [SerializeField] private Image reloadBar; // Référence à l'image de la barre de rechargement
 
     [Header("=== Targeting ===")]
     [SerializeField] private RectTransform uiCursor;
@@ -28,12 +31,21 @@ public class GunBehavior : MonoBehaviour
     [SerializeField] private float charge = 100f;
     [SerializeField] private bool chargeSystemEnabled = true;
 
+    [Header("=== Reload Settings ===")]
+    [SerializeField] private float reloadDelay = 3f;
+    [SerializeField] private float reloadRate = 10f; // Taux de rechargement par seconde
+
     private float fireTimer;
     private bool shooting;
+    private Coroutine reloadCoroutine;
 
     private void Start()
     {
         UpdateWeaponText();
+        if (reloadBar != null)
+        {
+            reloadBar.fillAmount = charge / 100f;
+        }
     }
 
     private void FixedUpdate()
@@ -47,11 +59,20 @@ public class GunBehavior : MonoBehaviour
     private void StartShooting()
     {
         shooting = true;
+        if (reloadCoroutine != null)
+        {
+            StopCoroutine(reloadCoroutine);
+            reloadCoroutine = null;
+        }
     }
 
     private void StopShooting()
     {
         shooting = false;
+        if (reloadCoroutine == null)
+        {
+            reloadCoroutine = StartCoroutine(ReloadAfterDelay());
+        }
     }
 
     private void HandleShooting()
@@ -64,6 +85,12 @@ public class GunBehavior : MonoBehaviour
         charge -= 5f;
         charge = Mathf.Max(charge, 0);
         UpdateChargeText();
+
+    
+        if (reloadBar != null)
+        {
+            reloadBar.fillAmount = charge / 100f;
+        }
     }
 
     private void ShootLaser()
@@ -101,6 +128,28 @@ public class GunBehavior : MonoBehaviour
     private void UpdateChargeText()
     {
         textCharge.text = Mathf.Round(charge) + "%";
+    }
+
+    private IEnumerator ReloadAfterDelay()
+    {
+        yield return new WaitForSeconds(reloadDelay);
+
+        while (charge < 100f)
+        {
+            charge += 1f;
+            charge = Mathf.Min(charge, 100f);
+            UpdateChargeText();
+
+         
+            if (reloadBar != null)
+            {
+                reloadBar.fillAmount = charge / 100f;
+            }
+
+            yield return new WaitForSeconds(1f / reloadRate);
+        }
+
+        reloadCoroutine = null;
     }
 
     #region Input Methods

@@ -8,6 +8,9 @@ public class WaveManager : MonoBehaviour
     [SerializeField] private int totalWaves = 10;
     [SerializeField] private float timeBetweenWaves = 5f;
     [SerializeField] private TextMeshProUGUI waveMessage;
+    [SerializeField] private TextMeshProUGUI enemiesRemainingText;
+    [SerializeField] private TextMeshProUGUI outpostsRemainingText;
+    [SerializeField] private TextMeshProUGUI currentWaveText;
     [SerializeField] private float outpostCount = 8;
     [SerializeField] private GameObject shield;
     [SerializeField] private Vector3 spawnAreaMin;
@@ -19,6 +22,7 @@ public class WaveManager : MonoBehaviour
 
     private void Start()
     {
+        UpdateHUD();
         StartCoroutine(StartNextWave());
     }
 
@@ -35,6 +39,8 @@ public class WaveManager : MonoBehaviour
         enemiesPerWave = currentWave * 2;
         enemiesRemaining = enemiesPerWave;
 
+        UpdateHUD();
+
         yield return new WaitForSeconds(timeBetweenWaves);
 
         for (var i = 0; i < enemiesPerWave; i++)
@@ -47,6 +53,8 @@ public class WaveManager : MonoBehaviour
     public void OutpostHandle()
     {
         outpostCount -= 1;
+
+        UpdateHUD();
 
         if (outpostCount <= 0)
         {
@@ -81,9 +89,29 @@ public class WaveManager : MonoBehaviour
     {
         enemiesRemaining--;
 
+        UpdateHUD();
+
         if (enemiesRemaining <= 0)
         {
             StartCoroutine(StartNextWave());
+        }
+    }
+
+    private void UpdateHUD()
+    {
+        if (enemiesRemainingText != null)
+        {
+            enemiesRemainingText.text = enemiesRemaining.ToString();
+        }
+
+        if (outpostsRemainingText != null)
+        {
+            outpostsRemainingText.text = outpostCount.ToString();
+        }
+
+        if (currentWaveText != null)
+        {
+            currentWaveText.text = currentWave.ToString();
         }
     }
 }
