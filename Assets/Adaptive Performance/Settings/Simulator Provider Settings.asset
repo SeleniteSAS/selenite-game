@@ -15,7 +15,7 @@ MonoBehaviour:
   m_Logging: 1
   m_AutomaticPerformanceModeEnabled: 0
   m_AutomaticGameModeEnabled: 0
-  m_EnableBoostOnStartup: 1
+  m_EnableBoostOnStartup: 0
   m_StatsLoggingFrequencyInFrames: 50
   m_IndexerSettings:
     m_Active: 1

@@ -1,20 +1,48 @@
 using System.Collections;
 using UnityEngine;
+using UnityEngine.UI;
 using TMPro;
 
 public class WaveManager : MonoBehaviour
 {
+    [Header("=== Enemy Settings ===")]
     [SerializeField] private GameObject[] enemyPrefabs;
     [SerializeField] private int totalWaves = 10;
     [SerializeField] private float timeBetweenWaves = 5f;
+    [SerializeField] private Vector3 spawnAreaMin;
+    [SerializeField] private Vector3 spawnAreaMax;
+
+    [Header("=== UI Settings ===")]
     [SerializeField] private TextMeshProUGUI waveMessage;
     [SerializeField] private TextMeshProUGUI enemiesRemainingText;
     [SerializeField] private TextMeshProUGUI outpostsRemainingText;
     [SerializeField] private TextMeshProUGUI currentWaveText;
+    [SerializeField] private TextMeshProUGUI pointsText;
+    [SerializeField] private Canvas skillsPointsCanvas;
+    [SerializeField] private TextMeshProUGUI upgradePointsText;
+
+    [Header("=== Outpost Settings ===")]
     [SerializeField] private float outpostCount = 8;
     [SerializeField] private GameObject shield;
-    [SerializeField] private Vector3 spawnAreaMin;
-    [SerializeField] private Vector3 spawnAreaMax;
+
+    [Header("=== Skills Points ===")]
+    [SerializeField] private int skillPoints = 0;
+
+    [Header("=== Ship Stats ===")]
+    [SerializeField] private SpaceShipBehavior spaceShipBehavior;
+    [SerializeField] private GunBehavior gunBehavior;
+    [SerializeField] private PlayerHealth playerHealth;
+
+    [Header("=== Upgrade Buttons ===")]
+    [SerializeField] private Button playerSpeedButton;
+    [SerializeField] private Button bulletSpeedButton;
+    [SerializeField] private Button bulletDamageButton;
+    [SerializeField] private Button playerMaxHealthButton;
+    [SerializeField] private Button boostMaxChargeButton;
+    [SerializeField] private Button boostChargeSpeedButton;
+    [SerializeField] private Button laserChargeSpeedButton;
+    [SerializeField] private Button laserMaxChargeButton;
+    [SerializeField] private Button applyButton;
 
     private int currentWave;
     private int enemiesPerWave;
@@ -22,19 +50,34 @@ public class WaveManager : MonoBehaviour
 
     private void Start()
     {
-        UpdateHUD();
-        currentWave++;
-        waveMessage.text = "Vague 1";
+        currentWave = 1;
         enemiesPerWave = currentWave * 2;
         enemiesRemaining = enemiesPerWave;
+
+        UpdateHUD();
+
+        waveMessage.text = "Vague 1";
+        
         for (var i = 0; i < enemiesPerWave; i++)
         {
             SpawnEnemy();
         }
-    }
 
+        skillsPointsCanvas.enabled = false;
+        Cursor.lockState = CursorLockMode.Locked;
+        Cursor.visible = false;
+
+        AssignButtonCallbacks();
+        Debug.Log("Boutons assignés et callbacks ajoutés.");
+    }
     private IEnumerator StartNextWave()
     {
+        if (currentWave > 1)
+        {
+            EndRound();
+            yield return new WaitUntil(() => Time.timeScale == 1); // Attendre que le jeu reprenne
+        }
+
         currentWave++;
         if (currentWave > totalWaves)
         {
@@ -60,6 +103,7 @@ public class WaveManager : MonoBehaviour
     public void OutpostHandle()
     {
         outpostCount -= 1;
+        skillPoints += 3;
 
         UpdateHUD();
 
@@ -78,7 +122,8 @@ public class WaveManager : MonoBehaviour
         );
 
         var enemyIndex = GetEnemyIndexForWave();
-        Instantiate(enemyPrefabs[enemyIndex], spawnPosition, Quaternion.identity);
+        var enemy = Instantiate(enemyPrefabs[enemyIndex], spawnPosition, Quaternion.identity);
+        enemy.GetComponent<EnemyHealth>().waveManager = this; 
     }
 
     private int GetEnemyIndexForWave()
@@ -92,15 +137,17 @@ public class WaveManager : MonoBehaviour
         };
     }
 
-    public void EnemyKilled()
+    public void EnemyKilled(GameObject enemy)
     {
+        Destroy(enemy);
         enemiesRemaining--;
+        skillPoints += 1;
 
         UpdateHUD();
 
         if (enemiesRemaining <= 0)
         {
-            StartCoroutine(StartNextWave());
+            EndRound();
         }
     }
 
@@ -120,5 +167,130 @@ public class WaveManager : MonoBehaviour
         {
             currentWaveText.text = currentWave.ToString();
         }
+
+        if (pointsText != null)
+        {
+            pointsText.text = skillPoints.ToString();
+        }
+
+        if (upgradePointsText != null)
+        {
+            upgradePointsText.text = "Points: " + skillPoints.ToString();
+        }
     }
+
+   private void EndRound()
+    {
+        Time.timeScale = 0;
+        skillsPointsCanvas.enabled = true;
+        Cursor.lockState = CursorLockMode.None;
+        Cursor.visible = true; 
+    }
+
+    public void ResumeGame()
+    {
+        skillsPointsCanvas.enabled = false;
+        Cursor.lockState = CursorLockMode.Locked;
+        Cursor.visible = false;
+        Time.timeScale = 1;
+        StartCoroutine(StartNextWave());
+    }
+
+    public void DecreaseSkillsPoints(int number)
+    {
+        skillPoints -= number;
+        skillPoints = Mathf.Clamp(skillPoints, 0, int.MaxValue);
+        UpdateHUD();
+    }
+
+    public void UpgradeSkill(string skillName)
+{
+    if (skillPoints <= 0) return;
+
+    switch (skillName)
+    {
+        case "playerSpeed":
+            if (spaceShipBehavior != null && spaceShipBehavior.thrustForce < 100000000f)
+            {
+                spaceShipBehavior.thrustForce += 100000f;
+                Debug.Log("Vitesse du joueur améliorée.");
+            }
+            break;
+        case "bulletSpeed":
+            if (gunBehavior != null && gunBehavior.fireRate > 0.05f)
+            {
+                gunBehavior.fireRate -= 0.01f;
+                Debug.Log("Vitesse des balles améliorée.");
+            }
+            break;
+        case "bulletDamage":
+            if (gunBehavior != null && gunBehavior.damage < 100)
+            {
+                gunBehavior.damage += 10;
+                Debug.Log("Dommages des balles améliorés.");
+            }
+            break;
+        case "playerMaxHealth":
+                if (playerHealth != null && playerHealth.MaxHealth < 500)
+                {
+                    playerHealth.IncreaseMaxHealth(50);
+                    Debug.Log("Santé maximale du joueur améliorée.");
+                }
+    break;
+
+        case "boostMaxCharge":
+            if (spaceShipBehavior != null && spaceShipBehavior.maxBoostAmount < 500f)
+            {
+                spaceShipBehavior.maxBoostAmount += 50f;
+                Debug.Log("Charge maximale du boost améliorée.");
+            }
+            break;
+        case "boostChargeSpeed":
+            if (spaceShipBehavior != null && spaceShipBehavior.boostRechargeRate < 50f)
+            {
+                spaceShipBehavior.boostRechargeRate += 5f;
+                Debug.Log("Vitesse de recharge du boost améliorée.");
+            }
+            break;
+        case "laserChargeSpeed":
+            if (gunBehavior != null && gunBehavior.reloadRate > 0.1f)
+            {
+                gunBehavior.reloadRate += 0.05f;
+                Debug.Log("Vitesse de recharge du laser améliorée.");
+            }
+            break;
+        case "laserMaxCharge":
+            if (gunBehavior != null && gunBehavior.charge < 500f)
+            {
+                gunBehavior.charge += 50f;
+                Debug.Log("Charge maximale du laser améliorée.");
+            }
+            break;
+        default:
+            Debug.LogWarning("Nom de compétence non reconnu.");
+            return;
+    }
+
+    DecreaseSkillsPoints(1);
+    UpdateShipStats();
+}
+private void UpdateShipStats()
+{
+    Debug.Log("Ship stats updated.");
+}
+
+
+private void AssignButtonCallbacks()
+{
+    playerSpeedButton.onClick.AddListener(() => UpgradeSkill("playerSpeed"));
+    bulletSpeedButton.onClick.AddListener(() => UpgradeSkill("bulletSpeed"));
+    bulletDamageButton.onClick.AddListener(() => UpgradeSkill("bulletDamage"));
+    playerMaxHealthButton.onClick.AddListener(() => UpgradeSkill("playerMaxHealth"));
+    boostMaxChargeButton.onClick.AddListener(() => UpgradeSkill("boostMaxCharge"));
+    boostChargeSpeedButton.onClick.AddListener(() => UpgradeSkill("boostChargeSpeed"));
+    laserChargeSpeedButton.onClick.AddListener(() => UpgradeSkill("laserChargeSpeed"));
+    laserMaxChargeButton.onClick.AddListener(() => UpgradeSkill("laserMaxCharge"));
+    applyButton.onClick.AddListener(ResumeGame);
+    Debug.Log("Callbacks pour les boutons d'amélioration assignés.");
+}
 }

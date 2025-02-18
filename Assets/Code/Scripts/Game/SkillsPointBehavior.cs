@@ -11,14 +11,15 @@ public class SkillsPointsBehavior : MonoBehaviour
 
     [Header("=== UI ===")]
     [SerializeField] private TextMeshProUGUI skillsPointsText; // Affiche constamment le nb de points
-    [SerializeField] private Canvas getSkillsPointsCanvas; // Quand tu gagnes des points (pop up du nb)
+    [SerializeField] private TextMeshProUGUI upgradePointsText; // Texte dans le Canvas des améliorations
+    [SerializeField] private Canvas skillsPointsCanvas; // Canvas d'amélioration des compétences
     [SerializeField] private AudioSource getSkillsPointsSound;
 
     private void Start()
     {
         skillPoints = baseSkillsPoints;
         UpdateSkillsPointsUI();
-        StartNewRound();
+        skillsPointsCanvas.enabled = false; // Désactiver le Canvas au début
     }
 
     private void UpdateSkillsPointsUI()
@@ -26,6 +27,10 @@ public class SkillsPointsBehavior : MonoBehaviour
         if (skillsPointsText != null)
         {
             skillsPointsText.text = "Points: " + skillPoints;
+        }
+        if (upgradePointsText != null)
+        {
+            upgradePointsText.text = "Points: " + skillPoints;
         }
     }
 
@@ -46,20 +51,20 @@ public class SkillsPointsBehavior : MonoBehaviour
 
     private IEnumerator DisplayGetSkillsPointsCanvas()
     {
-        getSkillsPointsCanvas.enabled = true;
+        skillsPointsCanvas.enabled = true;
         yield return new WaitForSeconds(2f); // Durée de l'affichage
-        getSkillsPointsCanvas.enabled = false;
+        skillsPointsCanvas.enabled = false;
     }
 
-    public void StartNewRound()
+    public void EndRound()
     {
         Time.timeScale = 0; // Mettre le jeu en pause
-        getSkillsPointsCanvas.enabled = true;
+        skillsPointsCanvas.enabled = true; // Activer le Canvas d'amélioration des compétences
     }
 
     public void ResumeGame()
     {
-        getSkillsPointsCanvas.enabled = false;
+        skillsPointsCanvas.enabled = false;
         Time.timeScale = 1; // Reprendre le jeu
     }
 }
