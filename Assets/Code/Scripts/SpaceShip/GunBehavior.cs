@@ -7,39 +7,42 @@ using System.Collections;
 public class GunBehavior : MonoBehaviour
 {
     [Header("=== Gun Settings ===")]
-    [SerializeField] private Camera playerCamera;
-    [SerializeField] private Transform laserOrigin1;
-    [SerializeField] private Transform laserOrigin2;
-    [SerializeField] private float fireRate = 0.2f;
-    [SerializeField] private GameObject explosion;
-    [SerializeField] private GameObject bullet;
-    [SerializeField] private AudioSource shootSound;
+    [SerializeField] public Camera playerCamera;
+    [SerializeField] public Transform laserOrigin1;
+    [SerializeField] public Transform laserOrigin2;
+    [SerializeField] public float fireRate = 0.2f;
+    [SerializeField] public GameObject explosion;
+    [SerializeField] public GameObject bullet;
+    [SerializeField] public AudioSource shootSound;
 
     [Header("=== Weapon Settings ===")]
-    [SerializeField] private int damage = 10;
+    [SerializeField] public int damage = 10;
 
     [Header("=== UI Elements ===")]
-    [SerializeField] private TextMeshProUGUI textWeapon;
-    [SerializeField] private TextMeshProUGUI textCharge;
-    [SerializeField] private Image reloadBar; // Référence à l'image de la barre de rechargement
+    [SerializeField] public TextMeshProUGUI textWeapon;
+    [SerializeField] public TextMeshProUGUI textCharge;
+    [SerializeField] public Image reloadBar;
 
     [Header("=== Targeting ===")]
-    [SerializeField] private RectTransform uiCursor;
-    [SerializeField] private Canvas canvas;
+    [SerializeField] public RectTransform uiCursor;
+    [SerializeField] public Canvas canvas;
 
     [Header("=== Charge System ===")]
-    [SerializeField] private float charge = 100f;
-    [SerializeField] private bool chargeSystemEnabled = true;
+    [SerializeField] public float charge = 100f;
+    [SerializeField] public bool chargeSystemEnabled = true;
 
     [Header("=== Reload Settings ===")]
-    [SerializeField] private float reloadDelay = 3f;
-    [SerializeField] private float reloadRate = 10f; // Taux de rechargement par seconde
+    [SerializeField] public float reloadDelay = 3f;
+    [SerializeField] public float reloadRate = 10f;
 
-    private float fireTimer;
-    private bool shooting;
-    private Coroutine reloadCoroutine;
+    public float FireRate { get => fireRate; set => fireRate = value; }
+    public int Damage { get => damage; set => damage = value; }
 
-    private void Start()
+    public float fireTimer;
+    public bool shooting;
+    public Coroutine reloadCoroutine;
+
+    public void Start()
     {
         UpdateWeaponText();
         if (reloadBar != null)
@@ -48,7 +51,7 @@ public class GunBehavior : MonoBehaviour
         }
     }
 
-    private void FixedUpdate()
+    public void FixedUpdate()
     {
         fireTimer += Time.deltaTime;
         if (!shooting || !(fireTimer > fireRate)) return;
@@ -56,7 +59,7 @@ public class GunBehavior : MonoBehaviour
         HandleShooting();
     }
 
-    private void StartShooting()
+    public void StartShooting()
     {
         shooting = true;
         if (reloadCoroutine != null)
@@ -66,7 +69,7 @@ public class GunBehavior : MonoBehaviour
         }
     }
 
-    private void StopShooting()
+    public void StopShooting()
     {
         shooting = false;
         if (reloadCoroutine == null)
@@ -75,7 +78,7 @@ public class GunBehavior : MonoBehaviour
         }
     }
 
-    private void HandleShooting()
+    public void HandleShooting()
     {
         if (charge <= 0 && chargeSystemEnabled) return;
         ShootLaser();
@@ -93,7 +96,7 @@ public class GunBehavior : MonoBehaviour
         }
     }
 
-    private void ShootLaser()
+    public void ShootLaser()
     {
         var direction1 = GetCursorPosition() - laserOrigin1.position;
         var direction2 = GetCursorPosition() - laserOrigin2.position;
@@ -105,7 +108,7 @@ public class GunBehavior : MonoBehaviour
         bullet2.GetComponent<BulletBehavior>().damage = damage;
     }
 
-    private void PlayShootSound()
+    public void PlayShootSound()
     {
         if (charge > 0 || !chargeSystemEnabled)
         {
@@ -113,24 +116,24 @@ public class GunBehavior : MonoBehaviour
         }
     }
 
-    private Vector3 GetCursorPosition()
+    public Vector3 GetCursorPosition()
     {
         var position = canvas.worldCamera.WorldToScreenPoint(uiCursor.position);
         position.z = (canvas.transform.position - canvas.worldCamera.transform.position).magnitude;
         return canvas.worldCamera.ScreenToWorldPoint(position);
     }
 
-    private void UpdateWeaponText()
+    public void UpdateWeaponText()
     {
         textWeapon.text = "Laser";
     }
 
-    private void UpdateChargeText()
+    public void UpdateChargeText()
     {
         textCharge.text = Mathf.Round(charge) + "%";
     }
 
-    private IEnumerator ReloadAfterDelay()
+    public IEnumerator ReloadAfterDelay()
     {
         yield return new WaitForSeconds(reloadDelay);
 

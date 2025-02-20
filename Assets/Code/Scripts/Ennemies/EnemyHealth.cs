@@ -5,12 +5,11 @@ public class EnemyHealth : MonoBehaviour
     [SerializeField] public int maxHealth = 100;
 
     public int currentHealth;
-    private WaveManager waveManager;
+    public WaveManager waveManager; // Champ pour référencer le WaveManager
 
     private void Awake()
     {
         currentHealth = maxHealth;
-        waveManager = FindObjectOfType<WaveManager>();
     }
 
     public void TakeDamage(int damage)
@@ -25,7 +24,10 @@ public class EnemyHealth : MonoBehaviour
     private void Die()
     {
         Debug.Log("The enemy died!");
-        waveManager.EnemyKilled();
+        if (waveManager != null)
+        {
+            waveManager.EnemyKilled(gameObject);  // Passe l'objet ennemi à la méthode EnemyKilled
+        }
         Destroy(gameObject);
     }
 }

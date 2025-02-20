@@ -8,50 +8,57 @@ using Debug = System.Diagnostics.Debug;
 public class SpaceShipBehavior : MonoBehaviour
 {
     [Header("=== Ship Movement Settings ===")]
-    [SerializeField] private float thrustForce = 500f;
-    [SerializeField] private float boostMultiplier = 2f;
-    [SerializeField] private float maxSpeed = 50f;
-    [SerializeField] private float verticalThrust = 10f;
-    [SerializeField] private float rotationSpeed = 2f;
-    [SerializeField] private float rollIntensity = 10f;
-    [SerializeField] private float rollResetTime = 3f;
+    [SerializeField] public float thrustForce = 500f;
+    [SerializeField] public float boostMultiplier = 2f;
+    [SerializeField] public float maxSpeed = 50f;
+    [SerializeField] public float verticalThrust = 10f;
+    [SerializeField] public float rotationSpeed = 2f;
+    [SerializeField] public float rollIntensity = 10f;
+    [SerializeField] public float rollResetTime = 3f;
 
     [Header("=== Camera Settings ===")]
-    [SerializeField] private CinemachineVirtualCamera virtualCamera;
-    [SerializeField] private float normalFOV = 80f;
-    [SerializeField] private float zoomedFOV = 50f;
-    [SerializeField] private float zoomSpeed = 20f;
+    [SerializeField] public CinemachineVirtualCamera virtualCamera;
+    [SerializeField] public float normalFOV = 80f;
+    [SerializeField] public float zoomedFOV = 50f;
+    [SerializeField] public float zoomSpeed = 20f;
 
     [Header("=== Boost Settings ===")]
-    [SerializeField] private float maxBoostAmount = 100f;
-    [SerializeField] private float boostConsumptionRate = 20f;
-    [SerializeField] private float boostRechargeRate = 10f;
+    [SerializeField] public float maxBoostAmount = 100f;
+    [SerializeField] public float boostConsumptionRate = 20f;
+    [SerializeField] public float boostRechargeRate = 10f;
 
     [Header("=== Mouse Settings ===")]
-    [SerializeField] private float mouseSensitivity = 1f;
+    [SerializeField] public float mouseSensitivity = 1f;
 
     [Header("=== UI Elements ===")]
-    [SerializeField] private RectTransform aimZone;
-    [SerializeField] private AudioSource spaceshipEngineSound;
-    [SerializeField] private RectTransform cursor;
-    [SerializeField] private RectTransform fakeCursor;
-    [SerializeField] private Image boostBar;
+    [SerializeField] public RectTransform aimZone;
+    [SerializeField] public AudioSource spaceshipEngineSound;
+    [SerializeField] public RectTransform cursor;
+    [SerializeField] public RectTransform fakeCursor;
+    [SerializeField] public Image boostBar;
 
     [Header("=== VFX ===")]
-    [SerializeField] private ParticleSystem boostVFX;
+    [SerializeField] public ParticleSystem boostVFX;
 
-    private Rigidbody rb;
-    private float thrustInput;
-    private bool boosting;
-    private Vector2 mouseDelta;
-    private float rollInput;
-    private float rollResetTimer;
-    private float verticalInput;
-    private float currentBoostAmount;
-    private bool isZooming;
-    private float currentFOV;
+    public Rigidbody rb;
+    public float thrustInput;
+    public bool boosting;
+    public Vector2 mouseDelta;
+    public float rollInput;
+    public float rollResetTimer;
+    public float verticalInput;
+    public float currentBoostAmount;
+    public bool isZooming;
+    public float currentFOV;
 
-    private void Start()
+    public float PlayerSpeed { get; set; } = 0; // Par défaut à 0
+    public float PlayerMaxHealth { get; set; } = 0; // Par défaut à 0
+    public float BoostMaxCharge { get; set; } = 0; // Par défaut à 0
+    public float BoostChargeSpeed { get; set; } = 0; // Par défaut à 0
+    public float LaserChargeSpeed { get; set; } = 0; // Par défaut à 0
+    public float LaserMaxCharge { get; set; } = 0; // Par défaut à 0
+
+    public void Start()
     {
         Time.timeScale = 1;
 
@@ -79,7 +86,7 @@ public class SpaceShipBehavior : MonoBehaviour
         UpdateBoostUI();
     }
 
-    private void FixedUpdate()
+    public void FixedUpdate()
     {
         HandleMouseControl();
         HandleThrust();
@@ -90,7 +97,7 @@ public class SpaceShipBehavior : MonoBehaviour
         RechargeBoost();
     }
 
-    private void HandleMouseControl()
+    public void HandleMouseControl()
     {
         var currentSensitivity = isZooming ? mouseSensitivity * 0.5f : mouseSensitivity;
 
@@ -108,7 +115,7 @@ public class SpaceShipBehavior : MonoBehaviour
         mouseDelta = Vector2.zero;
     }
 
-    private void HandleZoom()
+    public void HandleZoom()
     {
         if (!virtualCamera) return;
 
@@ -117,7 +124,7 @@ public class SpaceShipBehavior : MonoBehaviour
         virtualCamera.m_Lens.FieldOfView = currentFOV;
     }
 
-    private void HandleThrust()
+    public void HandleThrust()
     {
         var currentThrust = thrustForce;
         if (boosting && currentBoostAmount > 0)
@@ -135,7 +142,7 @@ public class SpaceShipBehavior : MonoBehaviour
         UpdateBoostUI();
     }
 
-    private void UpdateBoostUI()
+    public void UpdateBoostUI()
     {
         if (boostBar)
         {
@@ -143,7 +150,7 @@ public class SpaceShipBehavior : MonoBehaviour
         }
     }
 
-    private void RechargeBoost()
+    public void RechargeBoost()
     {
         if (boosting) return;
         currentBoostAmount += boostRechargeRate * Time.fixedDeltaTime;
@@ -151,12 +158,12 @@ public class SpaceShipBehavior : MonoBehaviour
         UpdateBoostUI();
     }
 
-    private void HandleRoll()
+    public void HandleRoll()
     {
         rb.AddRelativeTorque(Vector3.forward * (rollInput != 0 ? -rollInput * rollIntensity : -mouseDelta.x * rollIntensity));
     }
 
-    private void HandleRollReset()
+    public void HandleRollReset()
     {
         if (rollInput != 0)
         {
@@ -172,7 +179,7 @@ public class SpaceShipBehavior : MonoBehaviour
         rb.AddRelativeTorque(Vector3.forward * (-currentRoll * 0.5f));
     }
 
-    private void HandleVerticalMovement()
+    public void HandleVerticalMovement()
     {
         rb.AddForce(Vector3.up * (verticalInput * verticalThrust));
     }

@@ -10,15 +10,28 @@ public class SkillsPointsBehavior : MonoBehaviour
     [SerializeField] public int skillPoints;
 
     [Header("=== UI ===")]
-    [SerializeField] private Canvas skillsCanvas;
     [SerializeField] private TextMeshProUGUI skillsPointsText; // Affiche constamment le nb de points
-    [SerializeField] private Canvas getSkillsPointsCanvas; // Quand tu gagnes des points (pop up du nb)
+    [SerializeField] private TextMeshProUGUI upgradePointsText; // Texte dans le Canvas des améliorations
+    [SerializeField] private Canvas skillsPointsCanvas; // Canvas d'amélioration des compétences
     [SerializeField] private AudioSource getSkillsPointsSound;
 
     private void Start()
     {
         skillPoints = baseSkillsPoints;
         UpdateSkillsPointsUI();
+        skillsPointsCanvas.enabled = false; // Désactiver le Canvas au début
+    }
+
+    private void UpdateSkillsPointsUI()
+    {
+        if (skillsPointsText != null)
+        {
+            skillsPointsText.text = "Points: " + skillPoints;
+        }
+        if (upgradePointsText != null)
+        {
+            upgradePointsText.text = "Points: " + skillPoints;
+        }
     }
 
     public void IncreaseSkillsPoints(int number)
@@ -36,18 +49,22 @@ public class SkillsPointsBehavior : MonoBehaviour
         UpdateSkillsPointsUI();
     }
 
-    private void UpdateSkillsPointsUI()
-    {
-        if (skillsPointsText != null)
-        {
-            skillsPointsText.text = "Points: " + skillPoints;
-        }
-    }
-
     private IEnumerator DisplayGetSkillsPointsCanvas()
     {
-        getSkillsPointsCanvas.enabled = true;
+        skillsPointsCanvas.enabled = true;
         yield return new WaitForSeconds(2f); // Durée de l'affichage
-        getSkillsPointsCanvas.enabled = false;
+        skillsPointsCanvas.enabled = false;
+    }
+
+    public void EndRound()
+    {
+        Time.timeScale = 0; // Mettre le jeu en pause
+        skillsPointsCanvas.enabled = true; // Activer le Canvas d'amélioration des compétences
+    }
+
+    public void ResumeGame()
+    {
+        skillsPointsCanvas.enabled = false;
+        Time.timeScale = 1; // Reprendre le jeu
     }
 }
