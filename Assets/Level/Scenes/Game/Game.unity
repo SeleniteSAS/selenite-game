@@ -848,9 +848,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: Jouer
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 74ea09b1fa78d4804a86710ec6b530bf, type: 2}
-  m_sharedMaterial: {fileID: -2388592472201557705, guid: 74ea09b1fa78d4804a86710ec6b530bf,
-    type: 2}
+  m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+  m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -2742,7 +2741,31 @@ MonoBehaviour:
   enemiesRemainingText: {fileID: 526376524}
   outpostsRemainingText: {fileID: 849807583}
   currentWaveText: {fileID: 74426240}
+  pointsText: {fileID: 0}
+  skillsPointsCanvas: {fileID: 0}
+  upgradePointsText: {fileID: 0}
   shield: {fileID: 535016791}
+  skillPoints: 0
+  spaceShipBehavior: {fileID: 0}
+  gunBehavior: {fileID: 0}
+  playerHealth: {fileID: 0}
+  playerSpeedButton: {fileID: 0}
+  fireRateButton: {fileID: 0}
+  bulletDamageButton: {fileID: 0}
+  playerMaxHealthButton: {fileID: 0}
+  boostMaxChargeButton: {fileID: 0}
+  boostChargeSpeedButton: {fileID: 0}
+  laserChargeSpeedButton: {fileID: 0}
+  laserMaxChargeButton: {fileID: 0}
+  applyButton: {fileID: 0}
+  speedTXT: {fileID: 0}
+  damageTXT: {fileID: 0}
+  healthTXT: {fileID: 0}
+  boostMaxTXT: {fileID: 0}
+  boostSpeedTXT: {fileID: 0}
+  laserSpeedTXT: {fileID: 0}
+  laserMaxTXT: {fileID: 0}
+  fireRateTXT: {fileID: 0}
 --- !u!4 &458270329
 Transform:
   m_ObjectHideFlags: 0
@@ -3003,9 +3026,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: Options
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 74ea09b1fa78d4804a86710ec6b530bf, type: 2}
-  m_sharedMaterial: {fileID: -2388592472201557705, guid: 74ea09b1fa78d4804a86710ec6b530bf,
-    type: 2}
+  m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+  m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -9991,9 +10013,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: VR
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 74ea09b1fa78d4804a86710ec6b530bf, type: 2}
-  m_sharedMaterial: {fileID: -2388592472201557705, guid: 74ea09b1fa78d4804a86710ec6b530bf,
-    type: 2}
+  m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+  m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -10913,9 +10934,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: Quitter
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 74ea09b1fa78d4804a86710ec6b530bf, type: 2}
-  m_sharedMaterial: {fileID: -2388592472201557705, guid: 74ea09b1fa78d4804a86710ec6b530bf,
-    type: 2}
+  m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+  m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -11004,7 +11024,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &1115548122
 Transform:
   m_ObjectHideFlags: 0
@@ -13807,7 +13827,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!114 &1619764296
 MonoBehaviour:
   m_ObjectHideFlags: 0
