@@ -197,7 +197,7 @@ TrailRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Time: 0.5
+  m_Time: 0.4
   m_PreviewTimeScale: 1
   m_Parameters:
     serializedVersion: 3
@@ -207,7 +207,7 @@ TrailRenderer:
       m_Curve:
       - serializedVersion: 3
         time: 0
-        value: 0.48124996
+        value: 0.5124999
         inSlope: 0
         outSlope: 0
         tangentMode: 0
@@ -283,6 +283,7 @@ MonoBehaviour:
   lifetime: 10
   damage: 10
   explosion: {fileID: 159918, guid: 477a4f63862cdc247b84d50b67801e52, type: 3}
+  explosionOutpost: {fileID: 159918, guid: ff5346a9da61a4dc797f35f308e23563, type: 3}
   speed: 3
 --- !u!54 &8949075342187113456
 Rigidbody:

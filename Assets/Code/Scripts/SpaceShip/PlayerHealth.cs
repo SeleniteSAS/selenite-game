@@ -1,7 +1,9 @@
 using System.Collections;
 using UnityEngine;
-using UnityEngine.UI;
 using TMPro;
+using UnityEngine.Rendering;
+using UnityEngine.Rendering.Universal;
+using UnityEngine.UI;
 
 public class PlayerHealth : MonoBehaviour
 {
@@ -13,6 +15,7 @@ public class PlayerHealth : MonoBehaviour
     [Header("=== VFX ===")]
     [SerializeField] public GameObject explosionVFX;
     [SerializeField] public float intensity = 0.5f;
+    [SerializeField] public Volume volume;
 
     [Header("=== UI Elements ===")]
     [SerializeField] public Image healthBar; // Référence à l'image de la barre de vie
@@ -22,16 +25,21 @@ public class PlayerHealth : MonoBehaviour
     [SerializeField] public float regenAmount = 10f; // Quantité de régénération par seconde
 
     public int MaxHealth { get => maxHealth; set => maxHealth = value; }
-    public int CurrentHealth { get; private set; } // Utilisation de la propriété avec un setter privé
+    public int CurrentHealth { get; private set; }
 
-    public Color originalHealthBarColor;
-    public Color originalTextColor;
-    public bool isHealthBelowThreshold = false;
-    public Coroutine regenCoroutine;
-    public Coroutine blinkCoroutine;
+    private Color originalHealthBarColor;
+    private Color originalTextColor;
+    private bool isHealthBelowThreshold = false;
+    private Coroutine regenCoroutine;
+    private Coroutine blinkCoroutine;
 
-    public void Start()
+    private void Start()
     {
+        if (volume.profile.TryGet(out Vignette vignette))
+        {
+            vignette.intensity.value = 0;
+        }
+
         CurrentHealth = maxHealth;
         UpdateHealthDisplay();
 
@@ -56,8 +64,8 @@ public class PlayerHealth : MonoBehaviour
         {
             Die();
         }
+        StartCoroutine(DamageEffect());
 
-        // Réinitialiser la régénération si des dégâts sont subis
         if (regenCoroutine != null)
         {
             StopCoroutine(regenCoroutine);
@@ -65,19 +73,47 @@ public class PlayerHealth : MonoBehaviour
         regenCoroutine = StartCoroutine(RegenHealthAfterDelay());
     }
 
-    public void OnCollisionEnter(Collision collision)
+    private IEnumerator DamageEffect()
     {
-        Die();
+        if (volume.profile.TryGet(out Vignette vignette))
+        {
+            vignette.intensity.value = 0;
+        }
+
+        float timer = 0;
+        while (timer < 0.5f)
+        {
+            timer += Time.deltaTime;
+            vignette.intensity.value = Mathf.Lerp(0, intensity, timer / 0.5f);
+            yield return null;
+        }
+
+        timer = 0;
+        while (timer < 0.5f)
+        {
+            timer += Time.deltaTime;
+            vignette.intensity.value = Mathf.Lerp(intensity, 0, timer / 0.5f);
+            yield return null;
+        }
     }
 
-    public void Die()
+    private void OnCollisionEnter(Collision collision)
+    {
+        if (collision.gameObject.CompareTag("Border"))
+        {
+            return;
+        }
+
+        TakeDamage(20);
+    }
+
+    private void Die()
     {
         Instantiate(explosionVFX, gameObject.transform.position, Quaternion.identity);
         gameOverCanvas.enabled = true;
         gamePauseManager.enabled = false;
         Cursor.lockState = CursorLockMode.None;
         Cursor.visible = true;
-        Destroy(gameObject);
         var enemies = FindObjectsOfType<EnemyHealth>();
         foreach (var enemy in enemies)
         {
@@ -86,36 +122,35 @@ public class PlayerHealth : MonoBehaviour
         Time.timeScale = 0;
     }
 
-    public void UpdateHealthDisplay()
+    private void UpdateHealthDisplay()
     {
         if (hpText)
         {
             hpText.text = CurrentHealth.ToString();
         }
 
-        if (healthBar)
-        {
-            healthBar.fillAmount = (float)CurrentHealth / maxHealth;
+        if (!healthBar) return;
+        healthBar.fillAmount = (float)CurrentHealth / maxHealth;
 
-            if ((float)CurrentHealth / maxHealth < 0.3f && !isHealthBelowThreshold)
-            {
+        switch ((float)CurrentHealth / maxHealth)
+        {
+            case < 0.3f when !isHealthBelowThreshold:
                 isHealthBelowThreshold = true;
                 StartCoroutine(ChangeColorOverTime(healthBar, Color.red));
                 StartCoroutine(ChangeColorOverTime(hpText, Color.red));
-            }
-            else if ((float)CurrentHealth / maxHealth >= 0.3f && isHealthBelowThreshold)
-            {
+                break;
+            case >= 0.3f when isHealthBelowThreshold:
                 isHealthBelowThreshold = false;
                 StartCoroutine(ChangeColorOverTime(healthBar, originalHealthBarColor));
                 StartCoroutine(ChangeColorOverTime(hpText, originalTextColor));
-            }
+                break;
         }
     }
 
-    public IEnumerator ChangeColorOverTime(Graphic uiElement, Color targetColor)
+    private IEnumerator ChangeColorOverTime(Graphic uiElement, Color targetColor)
     {
-        Color initialColor = uiElement.color;
-        float duration = 0.5f; // Durée de la transition
+        var initialColor = uiElement.color;
+        var duration = 0.5f;
         float timer = 0;
 
         while (timer < duration)
@@ -128,7 +163,7 @@ public class PlayerHealth : MonoBehaviour
         uiElement.color = targetColor;
     }
 
-    public IEnumerator RegenHealthAfterDelay()
+    private IEnumerator RegenHealthAfterDelay()
     {
         yield return new WaitForSeconds(regenDelay);
 
@@ -140,7 +175,7 @@ public class PlayerHealth : MonoBehaviour
 
         while (CurrentHealth < maxHealth)
         {
-            CurrentHealth += 1; // Régénérer 1 point de vie par seconde
+            CurrentHealth += 1;
             if (CurrentHealth > maxHealth)
             {
                 CurrentHealth = maxHealth;
@@ -149,14 +184,12 @@ public class PlayerHealth : MonoBehaviour
             yield return new WaitForSeconds(1f / regenAmount);
         }
 
-        if (blinkCoroutine != null)
-        {
-            StopCoroutine(blinkCoroutine);
-            ResetHealthBarColor();
-        }
+        if (blinkCoroutine == null) yield break;
+        StopCoroutine(blinkCoroutine);
+        ResetHealthBarColor();
     }
 
-    public IEnumerator BlinkHealthBar()
+    private IEnumerator BlinkHealthBar()
     {
         while (true)
         {
@@ -167,17 +200,15 @@ public class PlayerHealth : MonoBehaviour
         }
     }
 
-    public void ResetHealthBarColor()
+    private void ResetHealthBarColor()
     {
         healthBar.color = originalHealthBarColor;
     }
 
-    // Ajoute cette méthode pour augmenter la santé maximale et actuelle
     public void IncreaseMaxHealth(int amount)
     {
         MaxHealth += amount;
-        CurrentHealth = Mathf.Clamp(CurrentHealth + amount, 0, MaxHealth); // Assure que la santé actuelle ne dépasse pas la santé maximale
+        CurrentHealth = Mathf.Clamp(CurrentHealth + amount, 0, MaxHealth);
         UpdateHealthDisplay();
-        Debug.Log("Santé maximale et actuelle du joueur améliorées.");
     }
 }

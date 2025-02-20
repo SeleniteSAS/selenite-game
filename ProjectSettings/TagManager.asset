@@ -9,6 +9,8 @@ TagManager:
   - TrackingObject
   - Actors
   - PacificBullet
+  - OutpostManager
+  - Border
   layers:
   - Default
   - TransparentFX
@@ -18,7 +20,7 @@ TagManager:
   - UI
   - PostProcess
   - Enemy Bullet
-  - 
+  - Obstacles
   - 
   - 
   - 

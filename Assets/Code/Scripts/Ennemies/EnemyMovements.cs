@@ -1,6 +1,7 @@
 using System;
 using UnityEngine;
 using System.Collections;
+using System.Linq;
 using Random = UnityEngine.Random;
 
 public class EnemyMovement : MonoBehaviour
@@ -14,6 +15,8 @@ public class EnemyMovement : MonoBehaviour
     [SerializeField] private float rotationSpeed = 200f;
     [SerializeField] private float optimalCombatDistance = 200f;
     [SerializeField] private float evasionThreshold = 10f;
+    [SerializeField] private float collisionAvoidanceDistance = 5f;
+    [SerializeField] private LayerMask obstacleLayer;
 
     [Header("Combat Settings")]
     [SerializeField] private GameObject enemyLaserPrefab;
@@ -22,10 +25,10 @@ public class EnemyMovement : MonoBehaviour
     [SerializeField] private float baseFireRate = 2f;
     [SerializeField] private int shotsPerBurst = 3;
     [SerializeField] private float timeBetweenShots = 0.1f;
-    [SerializeField] private float healthThresholdForRetreat = 0.6f;
     [SerializeField] private int damage = 10;
     [SerializeField] private float bulletDispersion = 0.002f;
 
+    private const float MinYPosition = 150f;
     private float nextFireTime;
     private float nextBurstTime;
     private bool isFiringBurst;
@@ -39,8 +42,7 @@ public class EnemyMovement : MonoBehaviour
     {
         Approach,
         Combat,
-        Evade,
-        Retreat
+        Evade
     }
 
     private void Start()
@@ -82,11 +84,8 @@ public class EnemyMovement : MonoBehaviour
         while (true)
         {
             var distanceToPlayer = Vector3.Distance(transform.position, player.position);
-            var healthPercentage = healthComponent ? healthComponent.currentHealth / healthComponent.maxHealth : 1f;
 
-            if (healthPercentage <= healthThresholdForRetreat)
-                currentState = CombatState.Retreat;
-            else if (IsUnderHeavyFire())
+            if (IsUnderHeavyFire())
                 currentState = CombatState.Evade;
             else if (distanceToPlayer > optimalCombatDistance * 1f)
                 currentState = CombatState.Approach;
@@ -110,9 +109,6 @@ public class EnemyMovement : MonoBehaviour
             case CombatState.Evade:
                 PerformEvasiveManeuvers();
                 break;
-            case CombatState.Retreat:
-                Retreat();
-                break;
             default:
                 throw new ArgumentOutOfRangeException();
         }
@@ -121,8 +117,7 @@ public class EnemyMovement : MonoBehaviour
 
     private void ApproachTarget()
     {
-        var direction = (player.position - transform.position).normalized;
-        transform.position += direction * (maxSpeed * Time.deltaTime);
+        MoveTowards(player.position);
     }
 
     private void PerformCombatManeuvers()
@@ -147,12 +142,7 @@ public class EnemyMovement : MonoBehaviour
                 Mathf.Sin(angle) * orbitRadius
             );
 
-            transform.position = Vector3.MoveTowards(
-                transform.position,
-                orbitPosition,
-                maxSpeed * Time.deltaTime
-            );
-
+            MoveTowards(orbitPosition);
             yield return null;
         }
         currentManeuverCoroutine = null;
@@ -168,24 +158,55 @@ public class EnemyMovement : MonoBehaviour
             isEvading = true;
         }
 
+        MoveTowards(targetPosition);
+
         if (Vector3.Distance(transform.position, targetPosition) < 0.1f)
-        {
             isEvading = false;
-        }
-        else
-        {
-            transform.position = Vector3.MoveTowards(
-                transform.position,
-                targetPosition,
-                maxSpeed * 1.5f * Time.deltaTime
-            );
-        }
     }
 
-    private void Retreat()
+    private Vector3 AvoidObstacles(Vector3 intendedDirection)
     {
-        var retreatDirection = (transform.position - player.position).normalized;
-        transform.position += retreatDirection * (maxSpeed * 1.2f * Time.deltaTime);
+        var hits = Physics.SphereCastAll(
+            transform.position,
+            collisionAvoidanceDistance,
+            intendedDirection,
+            collisionAvoidanceDistance,
+            obstacleLayer
+        );
+
+        if (hits.Length == 0) return intendedDirection;
+
+        var avoidanceDirection = (from hit in hits where hit.collider.transform != transform select (hit.point - transform.position).normalized).Aggregate(Vector3.zero, (current, directionToObstacle) => current + -directionToObstacle);
+
+        if (avoidanceDirection == Vector3.zero) return intendedDirection;
+        avoidanceDirection.Normalize();
+        return Vector3.Lerp(intendedDirection, avoidanceDirection, 0.7f).normalized;
+
+    }
+
+    private Vector3 ValidatePosition(Vector3 position)
+    {
+        var direction = (position - transform.position).normalized;
+        var distance = Vector3.Distance(transform.position, position);
+
+        if (Physics.Raycast(transform.position, direction, out var hit, distance, obstacleLayer))
+        {
+            return hit.point - (direction * collisionAvoidanceDistance);
+        }
+
+        return position;
+    }
+
+    private void MoveTowards(Vector3 destination)
+    {
+        var intendedDirection = (destination - transform.position).normalized;
+        var avoidanceDirection = AvoidObstacles(intendedDirection);
+
+        var targetPosition = transform.position + (avoidanceDirection * (maxSpeed * Time.deltaTime));
+        targetPosition = ValidatePosition(targetPosition);
+        targetPosition.y = Mathf.Max(targetPosition.y, MinYPosition);
+
+        transform.position = targetPosition;
     }
 
     private void UpdateRotation()
@@ -208,7 +229,7 @@ public class EnemyMovement : MonoBehaviour
             StartCoroutine(FireBurst());
             nextBurstTime = Time.time + baseFireRate;
         }
-        else if (currentState != CombatState.Retreat && Time.time >= nextFireTime)
+        else if (Time.time >= nextFireTime)
         {
             FireSingle();
             nextFireTime = Time.time + baseFireRate;

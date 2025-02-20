@@ -10,14 +10,12 @@ public class SpaceShipBehavior : MonoBehaviour
     [Header("=== Ship Movement Settings ===")]
     [SerializeField] public float thrustForce = 500f;
     [SerializeField] public float boostMultiplier = 2f;
-    [SerializeField] public float maxSpeed = 50f;
     [SerializeField] public float verticalThrust = 10f;
     [SerializeField] public float rotationSpeed = 2f;
     [SerializeField] public float rollIntensity = 10f;
     [SerializeField] public float rollResetTime = 3f;
 
     [Header("=== Camera Settings ===")]
-    [SerializeField] public CinemachineVirtualCamera virtualCamera;
     [SerializeField] public float normalFOV = 80f;
     [SerializeField] public float zoomedFOV = 50f;
     [SerializeField] public float zoomSpeed = 20f;
@@ -38,27 +36,29 @@ public class SpaceShipBehavior : MonoBehaviour
     [SerializeField] public Image boostBar;
 
     [Header("=== VFX ===")]
-    [SerializeField] public ParticleSystem boostVFX;
+    [SerializeField] public TrailRenderer boostTrailRight;
+    [SerializeField] public TrailRenderer boostTrailLeft;
 
-    public Rigidbody rb;
-    public float thrustInput;
-    public bool boosting;
-    public Vector2 mouseDelta;
-    public float rollInput;
-    public float rollResetTimer;
-    public float verticalInput;
-    public float currentBoostAmount;
-    public bool isZooming;
-    public float currentFOV;
+    private Rigidbody rb;
+    private float thrustInput;
+    private bool boosting;
+    private Vector2 mouseDelta;
+    private float rollInput;
+    private float rollResetTimer;
+    private float verticalInput;
+    private float currentBoostAmount;
+    private bool isZooming;
+    private CinemachineVirtualCamera virtualCamera;
+    private float currentFOV;
 
-    public float PlayerSpeed { get; set; } = 0; // Par défaut à 0
-    public float PlayerMaxHealth { get; set; } = 0; // Par défaut à 0
-    public float BoostMaxCharge { get; set; } = 0; // Par défaut à 0
-    public float BoostChargeSpeed { get; set; } = 0; // Par défaut à 0
-    public float LaserChargeSpeed { get; set; } = 0; // Par défaut à 0
-    public float LaserMaxCharge { get; set; } = 0; // Par défaut à 0
+    public float PlayerSpeed { get; set; } = 0;
+    public float PlayerMaxHealth { get; set; } = 0;
+    public float BoostMaxCharge { get; set; } = 0;
+    public float BoostChargeSpeed { get; set; } = 0;
+    public float LaserChargeSpeed { get; set; } = 0;
+    public float LaserMaxCharge { get; set; } = 0;
 
-    public void Start()
+    private void Start()
     {
         Time.timeScale = 1;
 
@@ -86,7 +86,7 @@ public class SpaceShipBehavior : MonoBehaviour
         UpdateBoostUI();
     }
 
-    public void FixedUpdate()
+    private void FixedUpdate()
     {
         HandleMouseControl();
         HandleThrust();
@@ -97,7 +97,7 @@ public class SpaceShipBehavior : MonoBehaviour
         RechargeBoost();
     }
 
-    public void HandleMouseControl()
+    private void HandleMouseControl()
     {
         var currentSensitivity = isZooming ? mouseSensitivity * 0.5f : mouseSensitivity;
 
@@ -115,7 +115,7 @@ public class SpaceShipBehavior : MonoBehaviour
         mouseDelta = Vector2.zero;
     }
 
-    public void HandleZoom()
+    private void HandleZoom()
     {
         if (!virtualCamera) return;
 
@@ -124,25 +124,45 @@ public class SpaceShipBehavior : MonoBehaviour
         virtualCamera.m_Lens.FieldOfView = currentFOV;
     }
 
-    public void HandleThrust()
+    private void HandleThrust()
     {
-        var currentThrust = thrustForce;
-        if (boosting && currentBoostAmount > 0)
-        {
-            currentThrust *= boostMultiplier;
-            currentBoostAmount -= boostConsumptionRate * Time.fixedDeltaTime;
-            currentBoostAmount = Mathf.Clamp(currentBoostAmount, 0, maxBoostAmount);
-        }
+        var targetVelocity = transform.forward * (thrustInput * GetCurrentThrust());
 
-        spaceshipEngineSound.pitch = 0.8f + Mathf.Abs(verticalThrust * 0.01f);
+        rb.velocity = Vector3.Lerp(
+            rb.velocity,
+            targetVelocity,
+            1 * Time.deltaTime
+        );
 
-        rb.AddRelativeForce(Vector3.forward * (currentThrust * thrustInput));
-        rb.velocity = Vector3.ClampMagnitude(rb.velocity, maxSpeed);
-
+        HandleBoostEffects();
+        UpdateEngineSound();
+        if (!boosting || !(currentBoostAmount > 0)) return;
+        currentBoostAmount -= boostConsumptionRate * Time.deltaTime;
+        currentBoostAmount = Mathf.Clamp(currentBoostAmount, 0, maxBoostAmount);
         UpdateBoostUI();
     }
 
-    public void UpdateBoostUI()
+    private float GetCurrentThrust()
+    {
+        var thrust = thrustForce;
+        if (boosting && currentBoostAmount > 0)
+        {
+            thrust *= boostMultiplier;
+        }
+        return thrust;
+    }
+
+    private void UpdateEngineSound()
+    {
+        var targetPitch = 0.8f + Mathf.Abs(rb.velocity.magnitude / (thrustForce * boostMultiplier));
+        spaceshipEngineSound.pitch = Mathf.Lerp(
+            spaceshipEngineSound.pitch,
+            targetPitch,
+            1 * Time.deltaTime
+        );
+    }
+
+    private void UpdateBoostUI()
     {
         if (boostBar)
         {
@@ -150,20 +170,36 @@ public class SpaceShipBehavior : MonoBehaviour
         }
     }
 
-    public void RechargeBoost()
+    private void HandleBoostEffects()
+    {
+
+        if (boosting && currentBoostAmount > 0)
+        {
+            if (!boostTrailLeft.emitting) boostTrailLeft.emitting = true;
+            if (!boostTrailRight.emitting) boostTrailRight.emitting = true;
+        }
+        else
+        {
+            if (boostTrailLeft.emitting) boostTrailLeft.emitting = false;
+            if (boostTrailRight.emitting) boostTrailRight.emitting = false;
+        }
+    }
+
+
+    private void RechargeBoost()
     {
         if (boosting) return;
-        currentBoostAmount += boostRechargeRate * Time.fixedDeltaTime;
+        currentBoostAmount += boostRechargeRate * Time.deltaTime;
         currentBoostAmount = Mathf.Clamp(currentBoostAmount, 0, maxBoostAmount);
         UpdateBoostUI();
     }
 
-    public void HandleRoll()
+    private void HandleRoll()
     {
         rb.AddRelativeTorque(Vector3.forward * (rollInput != 0 ? -rollInput * rollIntensity : -mouseDelta.x * rollIntensity));
     }
 
-    public void HandleRollReset()
+    private void HandleRollReset()
     {
         if (rollInput != 0)
         {
@@ -171,7 +207,7 @@ public class SpaceShipBehavior : MonoBehaviour
             return;
         }
 
-        rollResetTimer -= Time.fixedDeltaTime;
+        rollResetTimer -= Time.deltaTime;
         if (rollResetTimer > 0) return;
 
         var currentRoll = transform.rotation.eulerAngles.z;
@@ -179,7 +215,7 @@ public class SpaceShipBehavior : MonoBehaviour
         rb.AddRelativeTorque(Vector3.forward * (-currentRoll * 0.5f));
     }
 
-    public void HandleVerticalMovement()
+    private void HandleVerticalMovement()
     {
         rb.AddForce(Vector3.up * (verticalInput * verticalThrust));
     }

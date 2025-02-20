@@ -1,4 +1,5 @@
 using System.Collections;
+using System.Globalization;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
@@ -9,8 +10,6 @@ public class WaveManager : MonoBehaviour
     [SerializeField] private GameObject[] enemyPrefabs;
     [SerializeField] private int totalWaves = 10;
     [SerializeField] private float timeBetweenWaves = 5f;
-    [SerializeField] private Vector3 spawnAreaMin;
-    [SerializeField] private Vector3 spawnAreaMax;
 
     [Header("=== UI Settings ===")]
     [SerializeField] private TextMeshProUGUI waveMessage;
@@ -22,7 +21,6 @@ public class WaveManager : MonoBehaviour
     [SerializeField] private TextMeshProUGUI upgradePointsText;
 
     [Header("=== Outpost Settings ===")]
-    [SerializeField] private float outpostCount = 8;
     [SerializeField] private GameObject shield;
 
     [Header("=== Skills Points ===")]
@@ -32,17 +30,6 @@ public class WaveManager : MonoBehaviour
     [SerializeField] private SpaceShipBehavior spaceShipBehavior;
     [SerializeField] private GunBehavior gunBehavior;
     [SerializeField] private PlayerHealth playerHealth;
-
-    [Header("=== Upgrade Buttons ===")]
-    [SerializeField] private Button playerSpeedButton;
-    [SerializeField] private Button fireRateButton;
-    [SerializeField] private Button bulletDamageButton;
-    [SerializeField] private Button playerMaxHealthButton;
-    [SerializeField] private Button boostMaxChargeButton;
-    [SerializeField] private Button boostChargeSpeedButton;
-    [SerializeField] private Button laserChargeSpeedButton;
-    [SerializeField] private Button laserMaxChargeButton;
-    [SerializeField] private Button applyButton;
 
     [Header("=== Upgrade Texts ===")]
     [SerializeField] private TextMeshProUGUI speedTXT;
@@ -54,31 +41,39 @@ public class WaveManager : MonoBehaviour
     [SerializeField] private TextMeshProUGUI laserMaxTXT;
     [SerializeField] private TextMeshProUGUI fireRateTXT;
 
-
+    private OutpostSpawn gameManager;
+    private float outpostCount;
     private int currentWave;
     private int enemiesPerWave;
     private int enemiesRemaining;
 
+    private int playerSpeedPoint;
+    private int fireRatePoint;
+    private int bulletDamagePoint;
+    private int playerMaxHealthPoint;
+    private int boostMaxChargePoint;
+    private int boostChargeSpeedPoint;
+    private int laserChargeSpeedPoint;
+    private int laserMaxChargePoint;
+
     private void Start()
     {
         currentWave = 1;
-        enemiesPerWave = currentWave * 2;
+        enemiesPerWave = currentWave * 1; // TODO: Mettre à 10
         enemiesRemaining = enemiesPerWave;
 
+        gameManager = GameObject.FindWithTag("OutpostManager").GetComponent<OutpostSpawn>();
+        outpostCount = gameManager.numberOfOutposts;
         UpdateHUD();
 
         waveMessage.text = "Vague 1";
-        
+
         for (var i = 0; i < enemiesPerWave; i++)
         {
             SpawnEnemy();
         }
 
         skillsPointsCanvas.enabled = false;
-        Cursor.lockState = CursorLockMode.Locked;
-        Cursor.visible = false;
-
-        AssignButtonCallbacks();
     }
 
     private IEnumerator StartNextWave()
@@ -86,7 +81,7 @@ public class WaveManager : MonoBehaviour
         if (currentWave > 1)
         {
             EndRound();
-            yield return new WaitUntil(() => Time.timeScale == 1); // Attendre que le jeu reprenne
+            yield return new WaitUntil(() => Mathf.Approximately(Time.timeScale, 1)); // Attendre que le jeu reprenne
         }
 
         currentWave++;
@@ -97,7 +92,7 @@ public class WaveManager : MonoBehaviour
         }
 
         waveMessage.text = "Vague " + currentWave;
-        enemiesPerWave = currentWave * 2;
+        enemiesPerWave = currentWave * 5;
         enemiesRemaining = enemiesPerWave;
 
         UpdateHUD();
@@ -126,15 +121,18 @@ public class WaveManager : MonoBehaviour
 
     private void SpawnEnemy()
     {
-        var spawnPosition = new Vector3(
-            Random.Range(spawnAreaMin.x, spawnAreaMax.x),
-            Random.Range(spawnAreaMin.y, spawnAreaMax.y),
-            Random.Range(spawnAreaMin.z, spawnAreaMax.z)
-        );
+        var center = new Vector3(50000, 0, 50000);
+
+        var radius = Random.Range(5000f, 10000f);
+        var radian = Random.Range(0f,360f) * Mathf.Deg2Rad;
+
+        var coordX = center.x + Mathf.Cos(radian) * radius;
+        var coordZ = center.z + Mathf.Sin(radian) * radius;
+
+        var spawnPosition = new Vector3(coordX,  Random.Range(3000f,7000f), coordZ);
 
         var enemyIndex = GetEnemyIndexForWave();
-        var enemy = Instantiate(enemyPrefabs[enemyIndex], spawnPosition, Quaternion.identity);
-        enemy.GetComponent<EnemyHealth>().waveManager = this; 
+        Instantiate(enemyPrefabs[enemyIndex], spawnPosition, Quaternion.identity);
     }
 
     private int GetEnemyIndexForWave()
@@ -148,9 +146,8 @@ public class WaveManager : MonoBehaviour
         };
     }
 
-    public void EnemyKilled(GameObject enemy)
+    public void EnemyKilled()
     {
-        Destroy(enemy);
         enemiesRemaining--;
         skillPoints += 1;
 
@@ -164,29 +161,29 @@ public class WaveManager : MonoBehaviour
 
     private void UpdateHUD()
     {
-        if (enemiesRemainingText != null)
+        if (enemiesRemainingText)
         {
             enemiesRemainingText.text = enemiesRemaining.ToString();
         }
 
-        if (outpostsRemainingText != null)
+        if (outpostsRemainingText)
         {
-            outpostsRemainingText.text = outpostCount.ToString();
+            outpostsRemainingText.text = outpostCount.ToString(CultureInfo.CurrentCulture);
         }
 
-        if (currentWaveText != null)
+        if (currentWaveText)
         {
             currentWaveText.text = currentWave.ToString();
         }
 
-        if (pointsText != null)
+        if (pointsText)
         {
             pointsText.text = skillPoints.ToString();
         }
 
-        if (upgradePointsText != null)
+        if (upgradePointsText)
         {
-            upgradePointsText.text = "Points: " + skillPoints.ToString();
+            upgradePointsText.text = "Points: " + skillPoints;
         }
     }
 
@@ -207,7 +204,7 @@ public class WaveManager : MonoBehaviour
         StartCoroutine(StartNextWave());
     }
 
-    public void DecreaseSkillsPoints(int number)
+    private void DecreaseSkillsPoints(int number)
     {
         skillPoints -= number;
         skillPoints = Mathf.Clamp(skillPoints, 0, int.MaxValue);
@@ -221,61 +218,67 @@ public class WaveManager : MonoBehaviour
         switch (skillName)
         {
             case "playerSpeed":
-                if (spaceShipBehavior != null && spaceShipBehavior.thrustForce < 100000000f) 
+                if (spaceShipBehavior != null && spaceShipBehavior.thrustForce < 1000f)
                 {
-                    spaceShipBehavior.thrustForce += 100000f;
-                    speedTXT.text = "Vitesse du joueur: " + spaceShipBehavior.thrustForce.ToString();
+                    playerSpeedPoint += 1;
+                    spaceShipBehavior.thrustForce += 100f;
+                    speedTXT.text = playerSpeedPoint.ToString();
                 }
                 break;
             case "fireRate":
                 if (gunBehavior != null && gunBehavior.fireRate > 0.05f) 
                 {
-                    gunBehavior.fireRate -= 0.01f;
-                    fireRateTXT.text = "Vitesse des balles: " + gunBehavior.fireRate.ToString();
+                    fireRatePoint += 1;
+                    gunBehavior.fireRate -= 0.05f;
+                    fireRateTXT.text = fireRatePoint.ToString();
                 }
                 break;
             case "bulletDamage":
-                if (gunBehavior != null && gunBehavior.damage < 100) 
+                if (gunBehavior != null && gunBehavior.damage < 100)
                 {
-                    gunBehavior.damage += 10;
-                    damageTXT.text = "Dégâts des balles: " + gunBehavior.damage.ToString();
+                    bulletDamagePoint += 1;
+                    gunBehavior.damage += 5;
+                    damageTXT.text = bulletDamagePoint.ToString();
                 }
                 break;
             case "playerMaxHealth":
-                if (playerHealth != null && playerHealth.MaxHealth < 500) 
+                if (playerHealth != null && playerHealth.MaxHealth < 500)
                 {
-                    playerHealth.MaxHealth += 50;
-                    healthTXT.text = "Santé max du joueur: " + playerHealth.MaxHealth.ToString();
+                    playerMaxHealthPoint += 1;
+                    playerHealth.MaxHealth += 15;
+                    healthTXT.text = playerMaxHealthPoint.ToString();
                 }
                 break;
             case "boostMaxCharge":
-                if (spaceShipBehavior != null && spaceShipBehavior.maxBoostAmount < 500f) 
+                if (spaceShipBehavior != null && spaceShipBehavior.maxBoostAmount < 500f)
                 {
-                    spaceShipBehavior.maxBoostAmount += 50f;
-                    boostMaxTXT.text = "Charge max de boost: " + spaceShipBehavior.maxBoostAmount.ToString();
+                    boostMaxChargePoint += 1;
+                    spaceShipBehavior.maxBoostAmount += 10f;
+                    boostMaxTXT.text = boostMaxChargePoint.ToString();
                 }
                 break;
             case "boostChargeSpeed":
-                if (spaceShipBehavior != null && spaceShipBehavior.boostRechargeRate < 50f) 
+                if (spaceShipBehavior != null && spaceShipBehavior.boostRechargeRate < 50f)
                 {
-                    spaceShipBehavior.boostRechargeRate += 5f;
-                    boostSpeedTXT.text = "Vitesse de recharge du boost: " + spaceShipBehavior.boostRechargeRate.ToString();
+                    boostChargeSpeedPoint += 1;
+                    spaceShipBehavior.boostRechargeRate += 10f;
+                    boostSpeedTXT.text = boostChargeSpeedPoint.ToString();
                 }
                 break;
            case "laserChargeSpeed":
-    if (gunBehavior != null && gunBehavior.fireRate > 0.05f) 
-    {
-        gunBehavior.fireRate -= 0.01f;
-        laserSpeedTXT.text = "Cadence de tir du laser: " + gunBehavior.fireRate.ToString();
-    }
-    break;
-
+                if (gunBehavior != null && gunBehavior.fireRate > 0.05f)
+                {
+                    laserChargeSpeedPoint += 1;
+                    gunBehavior.reloadRate += 5f;
+                    laserSpeedTXT.text = laserChargeSpeedPoint.ToString();
+                }
                 break;
             case "laserMaxCharge":
-                if (gunBehavior != null && gunBehavior.charge < 500f) 
+                if (gunBehavior != null && gunBehavior.charge < 500f)
                 {
-                    gunBehavior.charge += 50f;
-                    laserMaxTXT.text = "Charge max du laser: " + gunBehavior.charge.ToString();
+                    laserMaxChargePoint += 1;
+                    gunBehavior.charge += 20f;
+                    laserMaxTXT.text = laserMaxChargePoint.ToString();
                 }
                 break;
             default:
@@ -284,67 +287,5 @@ public class WaveManager : MonoBehaviour
         }
 
         DecreaseSkillsPoints(1);
-        UpdateShipStats();
-    }
-
-    private void UpdateShipStats()
-{
-    if (spaceShipBehavior != null && speedTXT != null)
-    {
-        speedTXT.text = "Vitesse du joueur: " + spaceShipBehavior.thrustForce.ToString();
-    }
-
-    if (gunBehavior != null && damageTXT != null)
-    {
-        damageTXT.text = "Dégâts des balles: " + gunBehavior.damage.ToString();
-    }
-    else if (damageTXT != null)
-    {
-        damageTXT.text = "Dégâts des balles: N/A";
-    }
-
-    if (playerHealth != null && healthTXT != null)
-    {
-        healthTXT.text = "Santé max du joueur: " + playerHealth.MaxHealth.ToString();
-    }
-
-    if (spaceShipBehavior != null && boostMaxTXT != null)
-    {
-        boostMaxTXT.text = "Charge max de boost: " + spaceShipBehavior.maxBoostAmount.ToString();
-    }
-
-    if (spaceShipBehavior != null && boostSpeedTXT != null)
-    {
-        boostSpeedTXT.text = "Vitesse de recharge du boost: " + spaceShipBehavior.boostRechargeRate.ToString();
-    }
-
-    if (gunBehavior != null && laserSpeedTXT != null)
-    {
-        laserSpeedTXT.text = "Vitesse de recharge du laser: " + gunBehavior.fireRate.ToString();
-    }
-  
-
-    if (gunBehavior != null && laserMaxTXT != null)
-    {
-        laserMaxTXT.text = "Charge max du laser: " + gunBehavior.charge.ToString();
-    }
-    else if (laserMaxTXT != null)
-    {
-        laserMaxTXT.text = "Charge max du laser: N/A";
-    }
-}
-
-
-    private void AssignButtonCallbacks()
-    {
-        playerSpeedButton.onClick.AddListener(() => UpgradeSkill("playerSpeed"));
-        fireRateButton.onClick.AddListener(() => UpgradeSkill("fireRate"));
-        bulletDamageButton.onClick.AddListener(() => UpgradeSkill("bulletDamage"));
-        playerMaxHealthButton.onClick.AddListener(() => UpgradeSkill("playerMaxHealth"));
-        boostMaxChargeButton.onClick.AddListener(() => UpgradeSkill("boostMaxCharge"));
-        boostChargeSpeedButton.onClick.AddListener(() => UpgradeSkill("boostChargeSpeed"));
-        laserChargeSpeedButton.onClick.AddListener(() => UpgradeSkill("laserChargeSpeed"));
-        laserMaxChargeButton.onClick.AddListener(() => UpgradeSkill("laserMaxCharge"));
-        applyButton.onClick.AddListener(ResumeGame);
     }
 }
