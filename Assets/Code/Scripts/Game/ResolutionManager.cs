@@ -1,62 +1,79 @@
-using UnityEngine;
-using TMPro; // pour TextMeshPro
+using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
+using UnityEngine;
+using TMPro;
 
-public class ResolutionManager : MonoBehaviour
+public class SettingsResolution : MonoBehaviour
 {
     [SerializeField] private TMP_Dropdown resolutionDropdown;
     [SerializeField] private TMP_Dropdown qualityDropdown;
 
-    private Resolution[] availableResolutions;
-    private bool isInitialized = false;
+    private Resolution[] resolutions;
+    private List<Resolution> filteredResolutions;
+
+    private float currentRefreshRate;
+    private int currentResolutionIndex = 0;
 
     private void Start()
     {
-        availableResolutions = Screen.resolutions;
+        InitializeResolutionSettings();
+        InitializeQualitySettings();
+    }
+
+    private void InitializeResolutionSettings()
+    {
+        resolutions = Screen.resolutions;
+        filteredResolutions = new List<Resolution>();
 
         resolutionDropdown.ClearOptions();
-        var resolutionOptions = new List<string>();
+        currentRefreshRate = (float)Screen.currentResolution.refreshRateRatio.value;
 
-        var currentResolutionIndex = 0;
-        for (var i = 0; i < availableResolutions.Length; i++)
+        foreach (var t in resolutions)
         {
-            var option = availableResolutions[i].width + " x " + availableResolutions[i].height;
-            resolutionOptions.Add(option);
-
-            if (availableResolutions[i].width == Screen.currentResolution.width &&
-                availableResolutions[i].height == Screen.currentResolution.height)
+            if (Mathf.Approximately((float)t.refreshRateRatio.value, currentRefreshRate))
             {
-                currentResolutionIndex = i;
-            }
-            else
-            {
-                currentResolutionIndex = 0;
+                filteredResolutions.Add(t);
             }
         }
 
-        resolutionDropdown.AddOptions(resolutionOptions);
+        filteredResolutions.Sort((a, b) => a.width != b.width ? b.width.CompareTo(a.width) : b.height.CompareTo(a.height));
+
+        var options = new List<string>();
+        for (var i = 0; i < filteredResolutions.Count; i++)
+        {
+            var resolutionOption = filteredResolutions[i].width + "x" + filteredResolutions[i].height + " " + filteredResolutions[i].refreshRateRatio.value.ToString("0.##") + " Hz";
+            options.Add(resolutionOption);
+            if (filteredResolutions[i].width == Screen.width && filteredResolutions[i].height == Screen.height && Mathf.Approximately((float)filteredResolutions[i].refreshRateRatio.value, currentRefreshRate))
+            {
+                currentResolutionIndex = i;
+            }
+        }
+
+        resolutionDropdown.AddOptions(options);
         resolutionDropdown.value = currentResolutionIndex;
         resolutionDropdown.RefreshShownValue();
-
-        var qualityOptions = QualitySettings.names.ToList();
-        qualityDropdown.AddOptions(qualityOptions);
-        qualityDropdown.value = QualitySettings.GetQualityLevel();
-        qualityDropdown.RefreshShownValue();
-
-        isInitialized = true;
+        SetResolution(currentResolutionIndex);
     }
 
     public void SetResolution(int resolutionIndex)
     {
-        if (!isInitialized) return;
+        var resolution = filteredResolutions[resolutionIndex];
+        Debug.Log("Resolution: " + resolution.width + "x" + resolution.height + " " + resolution.refreshRateRatio.value + " Hz");
+        Screen.SetResolution(resolution.width, resolution.height, true);
+    }
 
-        var selectedResolution = availableResolutions[resolutionIndex];
-        Screen.SetResolution(selectedResolution.width, selectedResolution.height, Screen.fullScreen);
+    private void InitializeQualitySettings()
+    {
+        qualityDropdown.ClearOptions();
+        var qualityLevels = new List<string>(QualitySettings.names);
+        qualityDropdown.AddOptions(qualityLevels);
+        qualityDropdown.value = QualitySettings.GetQualityLevel();
+        qualityDropdown.RefreshShownValue();
     }
 
     public void SetQuality(int qualityIndex)
     {
         QualitySettings.SetQualityLevel(qualityIndex, true);
+        Debug.Log("Quality Level Set To: " + QualitySettings.names[qualityIndex]);
     }
 }
