@@ -19,7 +19,7 @@ public class TargetObject : MonoBehaviour
         var ui = GetComponentInParent<UIController>();
         if(ui == null)
         {
-            ui = GameObject.Find("WAVE MANAGER").GetComponent<UIController>();
+            ui = GameObject.Find("GAME").GetComponent<UIController>();
         }
         if (ui == null) Debug.LogError("No UIController component found");
         switch (type)
@@ -38,11 +38,12 @@ public class TargetObject : MonoBehaviour
     public void OnDestroy()
     {
         var ui = GetComponentInParent<UIController>();
-        if(ui == null)
+        if (!ui)
         {
-            ui = GameObject.Find("WAVE MANAGER").GetComponent<UIController>();
+            ui = GameObject.Find("GAME")?.GetComponent<UIController>();
         }
-        if (ui == null) Destroy(gameObject);
+
+        if (!ui) return;
         switch (type)
         {
             case TargetType.Enemy:

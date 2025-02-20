@@ -3,13 +3,15 @@ using UnityEngine;
 public class EnemyHealth : MonoBehaviour
 {
     [SerializeField] public int maxHealth = 100;
+    [SerializeField] private AudioSource dieSound;
 
     public int currentHealth;
-    public WaveManager waveManager; // Champ pour référencer le WaveManager
+    public WaveManager waveManager;
 
     private void Awake()
     {
         currentHealth = maxHealth;
+        waveManager = FindObjectOfType<WaveManager>();
     }
 
     public void TakeDamage(int damage)
@@ -23,11 +25,8 @@ public class EnemyHealth : MonoBehaviour
 
     private void Die()
     {
-        Debug.Log("The enemy died!");
-        if (waveManager != null)
-        {
-            waveManager.EnemyKilled(gameObject);  // Passe l'objet ennemi à la méthode EnemyKilled
-        }
+        waveManager.EnemyKilled(gameObject);
         Destroy(gameObject);
+        dieSound.PlayOneShot(dieSound.clip);
     }
 }

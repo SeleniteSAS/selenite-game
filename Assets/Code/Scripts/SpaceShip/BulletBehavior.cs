@@ -5,6 +5,7 @@ public class BulletBehavior : MonoBehaviour
     [SerializeField] private float lifetime;
     [SerializeField] public int damage = 10;
     [SerializeField] private GameObject explosion;
+    [SerializeField] private GameObject explosionOutpost;
     [SerializeField] private float speed = 3f;
 
     private Rigidbody rb;
@@ -17,13 +18,11 @@ public class BulletBehavior : MonoBehaviour
     }
 
     private void Update(){
-
         timer += Time.deltaTime;
 
         if(timer >= lifetime){
             Destroy(gameObject);
         }
-
     }
 
     private void OnCollisionEnter(Collision collider)
@@ -33,13 +32,20 @@ public class BulletBehavior : MonoBehaviour
         {
             var enemyShipBehavior = collider.gameObject.GetComponent<EnemyHealth>();
             enemyShipBehavior.TakeDamage(damage);
+            Instantiate(explosion,gameObject.transform.position,Quaternion.identity);
         }
-        else if (collider.gameObject.GetComponent<OutpostBehavior>() != null)
+        else if (collider.gameObject.GetComponentInParent<OutpostBehavior>() != null)
         {
-            var outpostBehavior = collider.gameObject.GetComponent<OutpostBehavior>();
+            var outpostBehavior = collider.gameObject.GetComponentInParent<OutpostBehavior>();
             outpostBehavior.TakeDamage(damage);
+            Instantiate(explosionOutpost,gameObject.transform.position,Quaternion.identity);
         }
-        Instantiate(explosion,gameObject.transform.position,Quaternion.identity);
+        else if (collider.gameObject.GetComponentInParent<CanonBehavior>() != null)
+        {
+            var outpostBehavior = collider.gameObject.GetComponentInParent<CanonBehavior>();
+            outpostBehavior.TakeDamage(damage);
+            Instantiate(explosionOutpost,gameObject.transform.position,Quaternion.identity);
+        }
         Destroy(gameObject);
     }
 }

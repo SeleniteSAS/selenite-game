@@ -9,8 +9,6 @@ public class WaveManager : MonoBehaviour
     [SerializeField] private GameObject[] enemyPrefabs;
     [SerializeField] private int totalWaves = 10;
     [SerializeField] private float timeBetweenWaves = 5f;
-    [SerializeField] private Vector3 spawnAreaMin;
-    [SerializeField] private Vector3 spawnAreaMax;
 
     [Header("=== UI Settings ===")]
     [SerializeField] private TextMeshProUGUI waveMessage;
@@ -22,7 +20,6 @@ public class WaveManager : MonoBehaviour
     [SerializeField] private TextMeshProUGUI upgradePointsText;
 
     [Header("=== Outpost Settings ===")]
-    [SerializeField] private float outpostCount = 8;
     [SerializeField] private GameObject shield;
 
     [Header("=== Skills Points ===")]
@@ -54,7 +51,8 @@ public class WaveManager : MonoBehaviour
     [SerializeField] private TextMeshProUGUI laserMaxTXT;
     [SerializeField] private TextMeshProUGUI fireRateTXT;
 
-
+    private OutpostSpawn gameManager;
+    private float outpostCount;
     private int currentWave;
     private int enemiesPerWave;
     private int enemiesRemaining;
@@ -65,20 +63,18 @@ public class WaveManager : MonoBehaviour
         enemiesPerWave = currentWave * 2;
         enemiesRemaining = enemiesPerWave;
 
+        gameManager = GameObject.FindWithTag("OutpostManager").GetComponent<OutpostSpawn>();
+        outpostCount = gameManager.numberOfOutposts;
         UpdateHUD();
 
         waveMessage.text = "Vague 1";
-        
+
         for (var i = 0; i < enemiesPerWave; i++)
         {
             SpawnEnemy();
         }
 
         skillsPointsCanvas.enabled = false;
-        Cursor.lockState = CursorLockMode.Locked;
-        Cursor.visible = false;
-
-        AssignButtonCallbacks();
     }
 
     private IEnumerator StartNextWave()
@@ -97,7 +93,7 @@ public class WaveManager : MonoBehaviour
         }
 
         waveMessage.text = "Vague " + currentWave;
-        enemiesPerWave = currentWave * 2;
+        enemiesPerWave = currentWave * 50;
         enemiesRemaining = enemiesPerWave;
 
         UpdateHUD();
@@ -126,15 +122,18 @@ public class WaveManager : MonoBehaviour
 
     private void SpawnEnemy()
     {
-        var spawnPosition = new Vector3(
-            Random.Range(spawnAreaMin.x, spawnAreaMax.x),
-            Random.Range(spawnAreaMin.y, spawnAreaMax.y),
-            Random.Range(spawnAreaMin.z, spawnAreaMax.z)
-        );
+        var center = new Vector3(50000, 0, 50000);
+
+        var radius = Random.Range(10000f, 20000f);
+        var radian = Random.Range(0f,360f) * Mathf.Deg2Rad;
+
+        var coordX = center.x + Mathf.Cos(radian) * radius;
+        var coordZ = center.z + Mathf.Sin(radian) * radius;
+
+        var spawnPosition = new Vector3(coordX,  Random.Range(1000f,7000f), coordZ);
 
         var enemyIndex = GetEnemyIndexForWave();
-        var enemy = Instantiate(enemyPrefabs[enemyIndex], spawnPosition, Quaternion.identity);
-        enemy.GetComponent<EnemyHealth>().waveManager = this; 
+        Instantiate(enemyPrefabs[enemyIndex], spawnPosition, Quaternion.identity);
     }
 
     private int GetEnemyIndexForWave()
@@ -150,7 +149,6 @@ public class WaveManager : MonoBehaviour
 
     public void EnemyKilled(GameObject enemy)
     {
-        Destroy(enemy);
         enemiesRemaining--;
         skillPoints += 1;
 
@@ -164,17 +162,17 @@ public class WaveManager : MonoBehaviour
 
     private void UpdateHUD()
     {
-        if (enemiesRemainingText != null)
+        if (enemiesRemainingText)
         {
             enemiesRemainingText.text = enemiesRemaining.ToString();
         }
 
-        if (outpostsRemainingText != null)
+        if (outpostsRemainingText)
         {
             outpostsRemainingText.text = outpostCount.ToString();
         }
 
-        if (currentWaveText != null)
+        if (currentWaveText)
         {
             currentWaveText.text = currentWave.ToString();
         }
