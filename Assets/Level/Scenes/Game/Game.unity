@@ -3190,7 +3190,7 @@ MonoBehaviour:
   gunBehavior: {fileID: 3412756477241539541}
   playerHealth: {fileID: 3412756477241539542}
   playerSpeedButton: {fileID: 118944029}
-  bulletSpeedButton: {fileID: 1450801023}
+  fireRateButton: {fileID: 1450801023}
   bulletDamageButton: {fileID: 2060897348}
   playerMaxHealthButton: {fileID: 402764345}
   boostMaxChargeButton: {fileID: 0}
@@ -3205,7 +3205,7 @@ MonoBehaviour:
   boostSpeedTXT: {fileID: 1898197954}
   laserSpeedTXT: {fileID: 583755083}
   laserMaxTXT: {fileID: 0}
-  bulletSpeedTXT: {fileID: 0}
+  fireRateTXT: {fileID: 0}
 --- !u!4 &458270329
 Transform:
   m_ObjectHideFlags: 0
@@ -13939,7 +13939,7 @@ MonoBehaviour:
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
           m_IntArgument: 0
           m_FloatArgument: 0
-          m_StringArgument: bulletSpeed
+          m_StringArgument: fireRate
           m_BoolArgument: 0
         m_CallState: 2
 --- !u!114 &1450801024
