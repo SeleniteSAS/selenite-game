@@ -35,7 +35,7 @@ public class WaveManager : MonoBehaviour
 
     [Header("=== Upgrade Buttons ===")]
     [SerializeField] private Button playerSpeedButton;
-    [SerializeField] private Button bulletSpeedButton;
+    [SerializeField] private Button fireRateButton;
     [SerializeField] private Button bulletDamageButton;
     [SerializeField] private Button playerMaxHealthButton;
     [SerializeField] private Button boostMaxChargeButton;
@@ -43,6 +43,17 @@ public class WaveManager : MonoBehaviour
     [SerializeField] private Button laserChargeSpeedButton;
     [SerializeField] private Button laserMaxChargeButton;
     [SerializeField] private Button applyButton;
+
+    [Header("=== Upgrade Texts ===")]
+    [SerializeField] private TextMeshProUGUI speedTXT;
+    [SerializeField] private TextMeshProUGUI damageTXT;
+    [SerializeField] private TextMeshProUGUI healthTXT;
+    [SerializeField] private TextMeshProUGUI boostMaxTXT;
+    [SerializeField] private TextMeshProUGUI boostSpeedTXT;
+    [SerializeField] private TextMeshProUGUI laserSpeedTXT;
+    [SerializeField] private TextMeshProUGUI laserMaxTXT;
+    [SerializeField] private TextMeshProUGUI fireRateTXT;
+
 
     private int currentWave;
     private int enemiesPerWave;
@@ -68,8 +79,8 @@ public class WaveManager : MonoBehaviour
         Cursor.visible = false;
 
         AssignButtonCallbacks();
-        Debug.Log("Boutons assignés et callbacks ajoutés.");
     }
+
     private IEnumerator StartNextWave()
     {
         if (currentWave > 1)
@@ -179,7 +190,7 @@ public class WaveManager : MonoBehaviour
         }
     }
 
-   private void EndRound()
+    private void EndRound()
     {
         Time.timeScale = 0;
         skillsPointsCanvas.enabled = true;
@@ -204,93 +215,136 @@ public class WaveManager : MonoBehaviour
     }
 
     public void UpgradeSkill(string skillName)
-{
-    if (skillPoints <= 0) return;
-
-    switch (skillName)
     {
-        case "playerSpeed":
-            if (spaceShipBehavior != null && spaceShipBehavior.thrustForce < 100000000f)
-            {
-                spaceShipBehavior.thrustForce += 100000f;
-                Debug.Log("Vitesse du joueur améliorée.");
-            }
-            break;
-        case "bulletSpeed":
-            if (gunBehavior != null && gunBehavior.fireRate > 0.05f)
-            {
-                gunBehavior.fireRate -= 0.01f;
-                Debug.Log("Vitesse des balles améliorée.");
-            }
-            break;
-        case "bulletDamage":
-            if (gunBehavior != null && gunBehavior.damage < 100)
-            {
-                gunBehavior.damage += 10;
-                Debug.Log("Dommages des balles améliorés.");
-            }
-            break;
-        case "playerMaxHealth":
-                if (playerHealth != null && playerHealth.MaxHealth < 500)
+        if (skillPoints <= 0) return;
+
+        switch (skillName)
+        {
+            case "playerSpeed":
+                if (spaceShipBehavior != null && spaceShipBehavior.thrustForce < 100000000f) 
                 {
-                    playerHealth.IncreaseMaxHealth(50);
-                    Debug.Log("Santé maximale du joueur améliorée.");
+                    spaceShipBehavior.thrustForce += 100000f;
+                    speedTXT.text = "Vitesse du joueur: " + spaceShipBehavior.thrustForce.ToString();
                 }
+                break;
+            case "fireRate":
+                if (gunBehavior != null && gunBehavior.fireRate > 0.05f) 
+                {
+                    gunBehavior.fireRate -= 0.01f;
+                    fireRateTXT.text = "Vitesse des balles: " + gunBehavior.fireRate.ToString();
+                }
+                break;
+            case "bulletDamage":
+                if (gunBehavior != null && gunBehavior.damage < 100) 
+                {
+                    gunBehavior.damage += 10;
+                    damageTXT.text = "Dégâts des balles: " + gunBehavior.damage.ToString();
+                }
+                break;
+            case "playerMaxHealth":
+                if (playerHealth != null && playerHealth.MaxHealth < 500) 
+                {
+                    playerHealth.MaxHealth += 50;
+                    healthTXT.text = "Santé max du joueur: " + playerHealth.MaxHealth.ToString();
+                }
+                break;
+            case "boostMaxCharge":
+                if (spaceShipBehavior != null && spaceShipBehavior.maxBoostAmount < 500f) 
+                {
+                    spaceShipBehavior.maxBoostAmount += 50f;
+                    boostMaxTXT.text = "Charge max de boost: " + spaceShipBehavior.maxBoostAmount.ToString();
+                }
+                break;
+            case "boostChargeSpeed":
+                if (spaceShipBehavior != null && spaceShipBehavior.boostRechargeRate < 50f) 
+                {
+                    spaceShipBehavior.boostRechargeRate += 5f;
+                    boostSpeedTXT.text = "Vitesse de recharge du boost: " + spaceShipBehavior.boostRechargeRate.ToString();
+                }
+                break;
+           case "laserChargeSpeed":
+    if (gunBehavior != null && gunBehavior.fireRate > 0.05f) 
+    {
+        gunBehavior.fireRate -= 0.01f;
+        laserSpeedTXT.text = "Cadence de tir du laser: " + gunBehavior.fireRate.ToString();
+    }
     break;
 
-        case "boostMaxCharge":
-            if (spaceShipBehavior != null && spaceShipBehavior.maxBoostAmount < 500f)
-            {
-                spaceShipBehavior.maxBoostAmount += 50f;
-                Debug.Log("Charge maximale du boost améliorée.");
-            }
-            break;
-        case "boostChargeSpeed":
-            if (spaceShipBehavior != null && spaceShipBehavior.boostRechargeRate < 50f)
-            {
-                spaceShipBehavior.boostRechargeRate += 5f;
-                Debug.Log("Vitesse de recharge du boost améliorée.");
-            }
-            break;
-        case "laserChargeSpeed":
-            if (gunBehavior != null && gunBehavior.reloadRate > 0.1f)
-            {
-                gunBehavior.reloadRate += 0.05f;
-                Debug.Log("Vitesse de recharge du laser améliorée.");
-            }
-            break;
-        case "laserMaxCharge":
-            if (gunBehavior != null && gunBehavior.charge < 500f)
-            {
-                gunBehavior.charge += 50f;
-                Debug.Log("Charge maximale du laser améliorée.");
-            }
-            break;
-        default:
-            Debug.LogWarning("Nom de compétence non reconnu.");
-            return;
+                break;
+            case "laserMaxCharge":
+                if (gunBehavior != null && gunBehavior.charge < 500f) 
+                {
+                    gunBehavior.charge += 50f;
+                    laserMaxTXT.text = "Charge max du laser: " + gunBehavior.charge.ToString();
+                }
+                break;
+            default:
+                Debug.LogWarning("Skill name not recognized.");
+                return;
+        }
+
+        DecreaseSkillsPoints(1);
+        UpdateShipStats();
     }
 
-    DecreaseSkillsPoints(1);
-    UpdateShipStats();
-}
-private void UpdateShipStats()
+    private void UpdateShipStats()
 {
-    Debug.Log("Ship stats updated.");
+    if (spaceShipBehavior != null && speedTXT != null)
+    {
+        speedTXT.text = "Vitesse du joueur: " + spaceShipBehavior.thrustForce.ToString();
+    }
+
+    if (gunBehavior != null && damageTXT != null)
+    {
+        damageTXT.text = "Dégâts des balles: " + gunBehavior.damage.ToString();
+    }
+    else if (damageTXT != null)
+    {
+        damageTXT.text = "Dégâts des balles: N/A";
+    }
+
+    if (playerHealth != null && healthTXT != null)
+    {
+        healthTXT.text = "Santé max du joueur: " + playerHealth.MaxHealth.ToString();
+    }
+
+    if (spaceShipBehavior != null && boostMaxTXT != null)
+    {
+        boostMaxTXT.text = "Charge max de boost: " + spaceShipBehavior.maxBoostAmount.ToString();
+    }
+
+    if (spaceShipBehavior != null && boostSpeedTXT != null)
+    {
+        boostSpeedTXT.text = "Vitesse de recharge du boost: " + spaceShipBehavior.boostRechargeRate.ToString();
+    }
+
+    if (gunBehavior != null && laserSpeedTXT != null)
+    {
+        laserSpeedTXT.text = "Vitesse de recharge du laser: " + gunBehavior.fireRate.ToString();
+    }
+  
+
+    if (gunBehavior != null && laserMaxTXT != null)
+    {
+        laserMaxTXT.text = "Charge max du laser: " + gunBehavior.charge.ToString();
+    }
+    else if (laserMaxTXT != null)
+    {
+        laserMaxTXT.text = "Charge max du laser: N/A";
+    }
 }
 
 
-private void AssignButtonCallbacks()
-{
-    playerSpeedButton.onClick.AddListener(() => UpgradeSkill("playerSpeed"));
-    bulletSpeedButton.onClick.AddListener(() => UpgradeSkill("bulletSpeed"));
-    bulletDamageButton.onClick.AddListener(() => UpgradeSkill("bulletDamage"));
-    playerMaxHealthButton.onClick.AddListener(() => UpgradeSkill("playerMaxHealth"));
-    boostMaxChargeButton.onClick.AddListener(() => UpgradeSkill("boostMaxCharge"));
-    boostChargeSpeedButton.onClick.AddListener(() => UpgradeSkill("boostChargeSpeed"));
-    laserChargeSpeedButton.onClick.AddListener(() => UpgradeSkill("laserChargeSpeed"));
-    laserMaxChargeButton.onClick.AddListener(() => UpgradeSkill("laserMaxCharge"));
-    applyButton.onClick.AddListener(ResumeGame);
-    Debug.Log("Callbacks pour les boutons d'amélioration assignés.");
-}
+    private void AssignButtonCallbacks()
+    {
+        playerSpeedButton.onClick.AddListener(() => UpgradeSkill("playerSpeed"));
+        fireRateButton.onClick.AddListener(() => UpgradeSkill("fireRate"));
+        bulletDamageButton.onClick.AddListener(() => UpgradeSkill("bulletDamage"));
+        playerMaxHealthButton.onClick.AddListener(() => UpgradeSkill("playerMaxHealth"));
+        boostMaxChargeButton.onClick.AddListener(() => UpgradeSkill("boostMaxCharge"));
+        boostChargeSpeedButton.onClick.AddListener(() => UpgradeSkill("boostChargeSpeed"));
+        laserChargeSpeedButton.onClick.AddListener(() => UpgradeSkill("laserChargeSpeed"));
+        laserMaxChargeButton.onClick.AddListener(() => UpgradeSkill("laserMaxCharge"));
+        applyButton.onClick.AddListener(ResumeGame);
+    }
 }
