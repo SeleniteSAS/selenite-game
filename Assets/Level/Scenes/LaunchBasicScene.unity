@@ -256,6 +256,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: SHIP
       objectReference: {fileID: 0}
+    - target: {fileID: 8210961228450868839, guid: 2b9f52a9f51af4c9399a4d5c36935466,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 9220989495577694807, guid: 2b9f52a9f51af4c9399a4d5c36935466,
         type: 3}
       propertyPath: m_Enabled
@@ -291,6 +296,10 @@ PrefabInstance:
     - target: {fileID: 1408581670749804, guid: f9a741bb8762344c6a2a9cb4217ef728, type: 3}
       propertyPath: m_Name
       value: Moon
+      objectReference: {fileID: 0}
+    - target: {fileID: 1408581670749804, guid: f9a741bb8762344c6a2a9cb4217ef728, type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 4693579709242440, guid: f9a741bb8762344c6a2a9cb4217ef728, type: 3}
       propertyPath: m_LocalScale.x
@@ -978,6 +987,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: MENU CONTAINER
+      objectReference: {fileID: 0}
+    - target: {fileID: 4194367169837758422, guid: 5a3ef4e5addb14086b3023df029416fe,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 4793226910593213215, guid: 5a3ef4e5addb14086b3023df029416fe,
         type: 3}

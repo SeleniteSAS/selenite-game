@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 
 public class EnemyHealth : MonoBehaviour
@@ -26,7 +27,11 @@ public class EnemyHealth : MonoBehaviour
     private void Die()
     {
         dieSound.PlayOneShot(dieSound.clip);
-        waveManager.EnemyKilled();
         Destroy(gameObject);
+    }
+
+    private void OnDestroy()
+    {
+        waveManager.EnemyKilled();
     }
 }

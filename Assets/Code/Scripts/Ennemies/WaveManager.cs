@@ -15,7 +15,6 @@ public class WaveManager : MonoBehaviour
     [SerializeField] private TextMeshProUGUI waveMessage;
     [SerializeField] private TextMeshProUGUI enemiesRemainingText;
     [SerializeField] private TextMeshProUGUI outpostsRemainingText;
-    [SerializeField] private TextMeshProUGUI currentWaveText;
     [SerializeField] private TextMeshProUGUI pointsText;
     [SerializeField] private Canvas skillsPointsCanvas;
     [SerializeField] private TextMeshProUGUI upgradePointsText;
@@ -24,7 +23,7 @@ public class WaveManager : MonoBehaviour
     [SerializeField] private GameObject shield;
 
     [Header("=== Skills Points ===")]
-    [SerializeField] private int skillPoints = 0;
+    [SerializeField] private int skillPoints;
 
     [Header("=== Ship Stats ===")]
     [SerializeField] private SpaceShipBehavior spaceShipBehavior;
@@ -60,7 +59,7 @@ public class WaveManager : MonoBehaviour
     private void Start()
     {
         currentWave = 1;
-        enemiesPerWave = currentWave * 1; // TODO: Mettre à 10
+        enemiesPerWave = currentWave * 5;
         enemiesRemaining = enemiesPerWave;
 
         gameManager = GameObject.FindWithTag("OutpostManager").GetComponent<OutpostSpawn>();
@@ -126,18 +125,16 @@ public class WaveManager : MonoBehaviour
     {
         return currentWave switch
         {
-            <= 3 => 0,
-            <= 6 => Random.Range(0, 2),
-            <= 9 => Random.Range(0, 3),
+            <= 2 => 0,
+            <= 4 => Random.Range(0, 2),
+            <= 6 => Random.Range(0, 3),
             _ => Random.Range(0, enemyPrefabs.Length)
         };
     }
 
     public void EnemyKilled()
     {
-        Debug.Log(enemiesRemaining);
         enemiesRemaining--;
-
         skillPoints += 1;
 
         UpdateHUD();
@@ -160,11 +157,6 @@ public class WaveManager : MonoBehaviour
             outpostsRemainingText.text = outpostCount.ToString(CultureInfo.CurrentCulture);
         }
 
-        if (currentWaveText)
-        {
-            currentWaveText.text = currentWave.ToString();
-        }
-
         if (pointsText)
         {
             pointsText.text = skillPoints + " PTS";
@@ -178,7 +170,10 @@ public class WaveManager : MonoBehaviour
 
     private void EndRound()
     {
-        skillsPointsCanvas.enabled = true;
+        if (skillsPointsCanvas)
+        {
+            skillsPointsCanvas.enabled = true;
+        }
         Cursor.lockState = CursorLockMode.None;
         Cursor.visible = true;
         Time.timeScale = 0;

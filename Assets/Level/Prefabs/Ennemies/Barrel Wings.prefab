@@ -231,10 +231,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   player: {fileID: 0}
   detectionRange: 1000000
-  maxSpeed: 700
-  rotationSpeed: 500
-  optimalCombatDistance: 1000
-  evasionThreshold: 10
+  maxSpeed: 500
+  rotationSpeed: 300
+  optimalCombatDistance: 3000
+  evasionThreshold: 20
   collisionAvoidanceDistance: 20
   obstacleLayer:
     serializedVersion: 2
@@ -245,11 +245,11 @@ MonoBehaviour:
   - {fileID: 223463828225319439}
   - {fileID: 5291040174516301375}
   bulletSpeed: 2500
-  baseFireRate: 0.07
+  baseFireRate: 0.2
   shotsPerBurst: 3
-  timeBetweenShots: 0.07
+  timeBetweenShots: 0.1
   damage: 30
-  bulletDispersion: 0.2
+  bulletDispersion: 0.05
 --- !u!114 &2100518451978741317
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -635,21 +635,51 @@ PrefabInstance:
       propertyPath: m_Materials.Array.data[0]
       value: 
       objectReference: {fileID: 2100000, guid: 599bb77d314628f418d4ddd4a8d8f6b8, type: 2}
+    - target: {fileID: -6629346533259653431, guid: 277bfd4c2529105489c1f24ac0502caa,
+        type: 3}
+      propertyPath: m_Layer
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: -5122729196051506736, guid: 277bfd4c2529105489c1f24ac0502caa,
         type: 3}
       propertyPath: m_Materials.Array.data[0]
       value: 
       objectReference: {fileID: 2100000, guid: 75d4a53a5077fd54ca1d64a6178a4fdd, type: 2}
+    - target: {fileID: -487007964671723297, guid: 277bfd4c2529105489c1f24ac0502caa,
+        type: 3}
+      propertyPath: m_Layer
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -82358763968010616, guid: 277bfd4c2529105489c1f24ac0502caa,
+        type: 3}
+      propertyPath: m_Layer
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: 277bfd4c2529105489c1f24ac0502caa,
         type: 3}
       propertyPath: m_Name
       value: barrel-wings
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 277bfd4c2529105489c1f24ac0502caa,
+        type: 3}
+      propertyPath: m_Layer
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1942178096450141737, guid: 277bfd4c2529105489c1f24ac0502caa,
         type: 3}
       propertyPath: m_Materials.Array.data[0]
       value: 
       objectReference: {fileID: 2100000, guid: 75d4a53a5077fd54ca1d64a6178a4fdd, type: 2}
+    - target: {fileID: 3198896233827727512, guid: 277bfd4c2529105489c1f24ac0502caa,
+        type: 3}
+      propertyPath: m_Layer
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3689095951929974192, guid: 277bfd4c2529105489c1f24ac0502caa,
+        type: 3}
+      propertyPath: m_Layer
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 3830773835737108359, guid: 277bfd4c2529105489c1f24ac0502caa,
         type: 3}
       propertyPath: m_Materials.Array.data[0]
@@ -665,11 +695,21 @@ PrefabInstance:
       propertyPath: m_Materials.Array.data[0]
       value: 
       objectReference: {fileID: 2100000, guid: 1a209417327552a4584f22b6c9fd25fb, type: 2}
+    - target: {fileID: 6809452369769266765, guid: 277bfd4c2529105489c1f24ac0502caa,
+        type: 3}
+      propertyPath: m_Layer
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 7550910082101747801, guid: 277bfd4c2529105489c1f24ac0502caa,
         type: 3}
       propertyPath: m_Materials.Array.data[0]
       value: 
       objectReference: {fileID: 2100000, guid: 75d4a53a5077fd54ca1d64a6178a4fdd, type: 2}
+    - target: {fileID: 7660025622423750823, guid: 277bfd4c2529105489c1f24ac0502caa,
+        type: 3}
+      propertyPath: m_Layer
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []

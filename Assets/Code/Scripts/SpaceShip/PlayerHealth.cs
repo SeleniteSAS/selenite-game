@@ -112,11 +112,6 @@ public class PlayerHealth : MonoBehaviour
         gamePauseManager.enabled = false;
         Cursor.lockState = CursorLockMode.None;
         Cursor.visible = true;
-        var enemies = FindObjectsOfType<EnemyHealth>();
-        foreach (var enemy in enemies)
-        {
-            Destroy(enemy.gameObject);
-        }
         Time.timeScale = 0;
     }
 

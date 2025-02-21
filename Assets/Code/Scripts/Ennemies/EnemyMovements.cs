@@ -127,7 +127,7 @@ public class EnemyMovement : MonoBehaviour
 
     private IEnumerator OrbitalManeuver()
     {
-        var maneuverDuration = Random.Range(3f, 6f);
+        var maneuverDuration = Random.Range(1f, 6f);
         var startTime = Time.time;
         var orbitCenter = player.position;
         var orbitRadius = optimalCombatDistance;
