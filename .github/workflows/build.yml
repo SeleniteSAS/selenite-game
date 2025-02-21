@@ -52,6 +52,7 @@ jobs:
         uses: actions/checkout@v4
         with:
           fetch-depth: 0
+          lfs: true
       
       - name: Get Unity Cache 🗄️
         uses: actions/cache@v4
@@ -101,6 +102,7 @@ jobs:
         uses: actions/checkout@v4
         with:
           fetch-depth: 0
+          lfs: true
       
       - name: Get Unity Cache 🗄️
         uses: actions/cache@v4
