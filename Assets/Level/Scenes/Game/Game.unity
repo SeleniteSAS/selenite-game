@@ -699,7 +699,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -150.5, y: -268.19998}
+  m_AnchoredPosition: {x: -150.5, y: 242}
   m_SizeDelta: {x: 200, y: 50}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &101381488
@@ -972,7 +972,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: 0, y: -208}
-  m_SizeDelta: {x: 499.7, y: 140.1}
+  m_SizeDelta: {x: 499.7, y: 55}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &118944029
 MonoBehaviour:
@@ -2271,7 +2271,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: 0.000015259, y: 212}
-  m_SizeDelta: {x: 499.7, y: 59.7}
+  m_SizeDelta: {x: 499.7, y: 55}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &355254890
 MonoBehaviour:
@@ -2765,7 +2765,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: 0.000015259, y: 152.00002}
-  m_SizeDelta: {x: 499.7, y: 59.7}
+  m_SizeDelta: {x: 499.7, y: 55}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &383310203
 MonoBehaviour:
@@ -3014,7 +3014,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: 0.000015259, y: -27.999989}
-  m_SizeDelta: {x: 499.7, y: 140.1}
+  m_SizeDelta: {x: 499.7, y: 55}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &402764345
 MonoBehaviour:
@@ -3239,7 +3239,7 @@ MonoBehaviour:
   currentWaveText: {fileID: 74426240}
   pointsText: {fileID: 1172052844}
   skillsPointsCanvas: {fileID: 837400066}
-  upgradePointsText: {fileID: 1172052844}
+  upgradePointsText: {fileID: 101381488}
   shield: {fileID: 1686313940}
   skillPoints: 13
   spaceShipBehavior: {fileID: 3412756477241539536}
@@ -3250,8 +3250,8 @@ MonoBehaviour:
   healthTXT: {fileID: 688011762}
   boostMaxTXT: {fileID: 37147215}
   boostSpeedTXT: {fileID: 1898197954}
-  laserSpeedTXT: {fileID: 583755083}
-  laserMaxTXT: {fileID: 583755083}
+  laserSpeedTXT: {fileID: 5187093}
+  laserMaxTXT: {fileID: 737036055}
   fireRateTXT: {fileID: 583755083}
 --- !u!4 &458270329
 Transform:
@@ -3326,7 +3326,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: 0.000015259, y: 92.000015}
-  m_SizeDelta: {x: 499.7, y: 140.1}
+  m_SizeDelta: {x: 499.7, y: 55}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &473885078
 MonoBehaviour:
@@ -5277,7 +5277,7 @@ Canvas:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 837400063}
-  m_Enabled: 1
+  m_Enabled: 0
   serializedVersion: 3
   m_RenderMode: 0
   m_Camera: {fileID: 0}
@@ -7618,7 +7618,7 @@ GameObject:
   - component: {fileID: 1172052845}
   - component: {fileID: 1172052844}
   m_Layer: 5
-  m_Name: Points txt
+  m_Name: UI - Skills Points
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -8799,7 +8799,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: 0.000015259, y: -147.99998}
-  m_SizeDelta: {x: 499.7, y: 140.1}
+  m_SizeDelta: {x: 499.7, y: 55}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1450801023
 MonoBehaviour:
@@ -9685,7 +9685,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: 0.000015259, y: 32.000015}
-  m_SizeDelta: {x: 499.7, y: 140.1}
+  m_SizeDelta: {x: 499.7, y: 55}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1569999306
 MonoBehaviour:
@@ -10137,8 +10137,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 151, y: -329.9}
-  m_SizeDelta: {x: 203.9, y: 49.6}
+  m_AnchoredPosition: {x: 0, y: -293}
+  m_SizeDelta: {x: 500, y: 49.6}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1658781430
 MonoBehaviour:
@@ -15774,7 +15774,7 @@ Canvas:
   m_RenderMode: 1
   m_Camera: {fileID: 1239261983}
   m_PlaneDistance: 1000
-  m_PixelPerfect: 0
+  m_PixelPerfect: 1
   m_ReceivesEvents: 1
   m_OverrideSorting: 0
   m_OverridePixelPerfect: 0
@@ -16240,7 +16240,7 @@ Canvas:
   m_RenderMode: 0
   m_Camera: {fileID: 1239261983}
   m_PlaneDistance: 500
-  m_PixelPerfect: 0
+  m_PixelPerfect: 1
   m_ReceivesEvents: 1
   m_OverrideSorting: 0
   m_OverridePixelPerfect: 0
@@ -17221,7 +17221,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: -0.000045776, y: -87.999985}
-  m_SizeDelta: {x: 499.7, y: 140.1}
+  m_SizeDelta: {x: 499.7, y: 55}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &2060897348
 MonoBehaviour:
@@ -17883,7 +17883,7 @@ PrefabInstance:
     - target: {fileID: 6074830117289387129, guid: 2b9f52a9f51af4c9399a4d5c36935466,
         type: 3}
       propertyPath: charge
-      value: 200
+      value: 100
       objectReference: {fileID: 0}
     - target: {fileID: 6074830117289387129, guid: 2b9f52a9f51af4c9399a4d5c36935466,
         type: 3}

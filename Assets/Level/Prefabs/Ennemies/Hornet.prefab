@@ -409,7 +409,7 @@ MonoBehaviour:
   detectionRange: 1000000
   maxSpeed: 500
   rotationSpeed: 200
-  optimalCombatDistance: 1000
+  optimalCombatDistance: 3000
   evasionThreshold: 20
   collisionAvoidanceDistance: 20
   obstacleLayer:
@@ -486,7 +486,7 @@ AudioSource:
   m_Enabled: 1
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 0}
-  m_audioClip: {fileID: 8300000, guid: df3445a900c8c49328d0b1925914031b, type: 3}
+  m_audioClip: {fileID: 8300000, guid: c8fdc7655d8414d1594ccd0a6a2cf493, type: 3}
   m_PlayOnAwake: 0
   m_Volume: 0.573
   m_Pitch: 1

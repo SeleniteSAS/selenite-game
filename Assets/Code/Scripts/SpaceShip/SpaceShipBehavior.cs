@@ -9,54 +9,47 @@ public class SpaceShipBehavior : MonoBehaviour
 {
     [Header("=== Ship Movement Settings ===")]
     [SerializeField] public float thrustForce = 500f;
-    [SerializeField] public float boostMultiplier = 2f;
-    [SerializeField] public float verticalThrust = 10f;
-    [SerializeField] public float rotationSpeed = 2f;
-    [SerializeField] public float rollIntensity = 10f;
-    [SerializeField] public float rollResetTime = 3f;
+    [SerializeField] private float boostMultiplier = 2f;
+    [SerializeField] private float verticalThrust = 10f;
+    [SerializeField] private float rotationSpeed = 2f;
+    [SerializeField] private float rollIntensity = 10f;
+    [SerializeField] private float rollResetTime = 3f;
 
     [Header("=== Camera Settings ===")]
-    [SerializeField] public float normalFOV = 80f;
-    [SerializeField] public float zoomedFOV = 50f;
-    [SerializeField] public float zoomSpeed = 20f;
+    [SerializeField] private float normalFOV = 80f;
+    [SerializeField] private float zoomedFOV = 50f;
+    [SerializeField] private float zoomSpeed = 20f;
 
     [Header("=== Boost Settings ===")]
     [SerializeField] public float maxBoostAmount = 100f;
-    [SerializeField] public float boostConsumptionRate = 20f;
+    [SerializeField] private float boostConsumptionRate = 20f;
     [SerializeField] public float boostRechargeRate = 10f;
 
     [Header("=== Mouse Settings ===")]
-    [SerializeField] public float mouseSensitivity = 1f;
+    [SerializeField] private float mouseSensitivity = 1f;
 
     [Header("=== UI Elements ===")]
-    [SerializeField] public RectTransform aimZone;
-    [SerializeField] public AudioSource spaceshipEngineSound;
-    [SerializeField] public RectTransform cursor;
-    [SerializeField] public RectTransform fakeCursor;
-    [SerializeField] public Image boostBar;
+    [SerializeField] private RectTransform aimZone;
+    [SerializeField] private AudioSource spaceshipEngineSound;
+    [SerializeField] private RectTransform cursor;
+    [SerializeField] private RectTransform fakeCursor;
+    [SerializeField] private Image boostBar;
 
     [Header("=== VFX ===")]
-    [SerializeField] public TrailRenderer boostTrailRight;
-    [SerializeField] public TrailRenderer boostTrailLeft;
+    [SerializeField] private TrailRenderer boostTrailRight;
+    [SerializeField] private TrailRenderer boostTrailLeft;
 
-    private Rigidbody rb;
-    private float thrustInput;
-    private bool boosting;
-    private Vector2 mouseDelta;
-    private float rollInput;
+    private CinemachineVirtualCamera virtualCamera;
+    private float currentBoostAmount;
     private float rollResetTimer;
     private float verticalInput;
-    private float currentBoostAmount;
-    private bool isZooming;
-    private CinemachineVirtualCamera virtualCamera;
+    private Vector2 mouseDelta;
+    private float thrustInput;
     private float currentFOV;
-
-    public float PlayerSpeed { get; set; } = 0;
-    public float PlayerMaxHealth { get; set; } = 0;
-    public float BoostMaxCharge { get; set; } = 0;
-    public float BoostChargeSpeed { get; set; } = 0;
-    public float LaserChargeSpeed { get; set; } = 0;
-    public float LaserMaxCharge { get; set; } = 0;
+    private float rollInput;
+    private bool isZooming;
+    private bool boosting;
+    private Rigidbody rb;
 
     private void Start()
     {
@@ -162,7 +155,7 @@ public class SpaceShipBehavior : MonoBehaviour
         );
     }
 
-    private void UpdateBoostUI()
+    public void UpdateBoostUI()
     {
         if (boostBar)
         {

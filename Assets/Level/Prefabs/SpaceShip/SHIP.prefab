@@ -1543,7 +1543,7 @@ Transform:
   m_GameObject: {fileID: 5171345710819236969}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -2.57, y: -1.59, z: 4.09}
+  m_LocalPosition: {x: -2.541, y: -1.494, z: 5.312}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -1789,7 +1789,7 @@ Transform:
   m_GameObject: {fileID: 6156254710715910746}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 2.55, y: -1.62, z: 4.09}
+  m_LocalPosition: {x: 2.541, y: -1.494, z: 5.312}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -2140,6 +2140,7 @@ MonoBehaviour:
   healthBar: {fileID: 0}
   regenDelay: 5
   regenAmount: 10
+  currentHealth: 0
 --- !u!114 &6074830117289387129
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2152,11 +2153,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 262e18fe6cbe749f6abe232bd847d6fc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  playerCamera: {fileID: 0}
   laserOrigin1: {fileID: 8004294576279038181}
   laserOrigin2: {fileID: 282702436064049478}
   fireRate: 0.1
-  explosion: {fileID: 159918, guid: a0040bf7072bc2f4e82d887d50a9c5e2, type: 3}
   bullet: {fileID: 4813966631049036289, guid: 858b3e827fde309489615c6daec4fab1, type: 3}
   shootSound: {fileID: 584451054889442973}
   damage: 10
@@ -2169,8 +2168,6 @@ MonoBehaviour:
   chargeSystemEnabled: 1
   reloadDelay: 3
   reloadRate: 10
-  fireTimer: 0
-  shooting: 0
 --- !u!65 &7938868037848098043
 BoxCollider:
   m_ObjectHideFlags: 0

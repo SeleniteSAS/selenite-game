@@ -7,34 +7,34 @@ using System.Collections;
 public class GunBehavior : MonoBehaviour
 {
     [Header("=== Gun Settings ===")]
-    [SerializeField] public Transform laserOrigin1;
-    [SerializeField] public Transform laserOrigin2;
+    [SerializeField] private Transform laserOrigin1;
+    [SerializeField] private Transform laserOrigin2;
     [SerializeField] public float fireRate = 0.2f;
-    [SerializeField] public GameObject bullet;
-    [SerializeField] public AudioSource shootSound;
+    [SerializeField] private GameObject bullet;
+    [SerializeField] private AudioSource shootSound;
 
     [Header("=== Weapon Settings ===")]
     [SerializeField] public int damage = 10;
 
     [Header("=== UI Elements ===")]
-    [SerializeField] public TextMeshProUGUI textWeapon;
-    [SerializeField] public TextMeshProUGUI textCharge;
-    [SerializeField] public Image reloadBar;
+    [SerializeField] private TextMeshProUGUI textWeapon;
+    [SerializeField] private TextMeshProUGUI textCharge;
+    [SerializeField] private Image reloadBar;
 
     [Header("=== Targeting ===")]
-    [SerializeField] public RectTransform uiCursor;
-    [SerializeField] public Canvas canvas;
+    [SerializeField] private RectTransform uiCursor;
+    [SerializeField] private Canvas canvas;
 
     [Header("=== Charge System ===")]
     [SerializeField] public float charge = 100f;
-    [SerializeField] public bool chargeSystemEnabled = true;
+    [SerializeField] private bool chargeSystemEnabled = true;
 
     [Header("=== Reload Settings ===")]
-    [SerializeField] public float reloadDelay = 3f;
+    [SerializeField] private float reloadDelay = 3f;
     [SerializeField] public float reloadRate = 10f;
 
-    public float fireTimer;
-    public bool shooting;
+    private float fireTimer;
+    private bool shooting;
     private Coroutine reloadCoroutine;
 
     private void Start()
@@ -118,7 +118,7 @@ public class GunBehavior : MonoBehaviour
         textWeapon.text = "Laser";
     }
 
-    private void UpdateChargeText()
+    public void UpdateChargeText()
     {
         textCharge.text = Mathf.Round(charge) + "%";
     }
