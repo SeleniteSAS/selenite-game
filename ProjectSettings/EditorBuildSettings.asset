@@ -6,11 +6,11 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 1
-    path: Assets/Level/Scenes/Trailer.unity
-    guid: 7b3db02b28fbd4b58aa8f1f1a27c6300
-  - enabled: 1
     path: Assets/Level/Scenes/LaunchBasicScene.unity
     guid: 66b15b60e35714855a7d6ae193cfc30c
+  - enabled: 1
+    path: Assets/Level/Scenes/Trailer.unity
+    guid: 7b3db02b28fbd4b58aa8f1f1a27c6300
   - enabled: 1
     path: Assets/Level/Scenes/Game/Game.unity
     guid: 565680837a26f42faba608b7bc4a4c29
@@ -25,4 +25,6 @@ EditorBuildSettings:
     com.unity.input.settings: {fileID: 11400000, guid: c696e89ae21e84cba8bea864878d3577,
       type: 2}
     com.unity.xr.arfoundation.simulation_settings: {fileID: 11400000, guid: 8b9768535a251455ea9d303e33f12603,
+      type: 2}
+    com.unity.xr.management.loader_settings: {fileID: 11400000, guid: 7c556ad9dff8643fd99914feea6c958c,
       type: 2}
