@@ -41,7 +41,7 @@ public class CanonBehavior : MonoBehaviour
     private void Die()
     {
         structures = GetComponentsInChildren<MeshRenderer>();
-        
+
         foreach (var structure in structures)
         {
             structure.material = destroyedMaterial;
@@ -50,14 +50,9 @@ public class CanonBehavior : MonoBehaviour
 
         youWinCanvas.enabled = true;
         Destroy(gameObject);
-        var enemies = FindObjectsOfType<EnemyHealth>();
-        foreach (var enemy in enemies)
-        {
-            Destroy(enemy.gameObject);
-        }
+        Time.timeScale = 0;
         Cursor.lockState = CursorLockMode.None;
         Cursor.visible = true;
         if (skillsCanvas) skillsCanvas.enabled = false;
-        Time.timeScale = 0;
     }
 }
