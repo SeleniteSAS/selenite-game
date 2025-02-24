@@ -18,6 +18,7 @@ public class WaveManager : MonoBehaviour
     [SerializeField] private TextMeshProUGUI pointsText;
     [SerializeField] private Canvas skillsPointsCanvas;
     [SerializeField] private TextMeshProUGUI upgradePointsText;
+    [SerializeField] private GamePauseManager gamePauseManager;
 
     [Header("=== Outpost Settings ===")]
     [SerializeField] private GameObject shield;
@@ -177,6 +178,7 @@ public class WaveManager : MonoBehaviour
         Cursor.lockState = CursorLockMode.None;
         Cursor.visible = true;
         Time.timeScale = 0;
+        gamePauseManager.enabled = false;
     }
 
     public void ResumeGame()
@@ -185,6 +187,7 @@ public class WaveManager : MonoBehaviour
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
         skillsPointsCanvas.enabled = false;
+        gamePauseManager.enabled = true;
         StartNextWave();
     }
 
@@ -259,7 +262,7 @@ public class WaveManager : MonoBehaviour
                     DecreaseSkillsPoints(1);
                 }
                 break;
-           case "laserChargeSpeed":
+            case "laserChargeSpeed":
                 if (gunBehavior != null && gunBehavior.reloadRate < 500f)
                 {
                     laserChargeSpeedPoint += 1;

@@ -11,7 +11,6 @@ public class CinematicBehavior : MonoBehaviour
     public Image fillCircle;
     public float holdDuration = 2f;
     private float holdTime = 0f;
-    private bool isSkipping = false;
 
     private void Start()
     {
@@ -35,7 +34,7 @@ public class CinematicBehavior : MonoBehaviour
 
     private void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Space))
+        if (Input.anyKeyDown)
         {
             skipCanvas.SetActive(true);
         }
@@ -50,11 +49,10 @@ public class CinematicBehavior : MonoBehaviour
                 SkipCinematic();
             }
         }
-        else if (Input.GetKeyUp(KeyCode.Space))
+        else
         {
             holdTime = 0f;
             fillCircle.fillAmount = 0f;
-            skipCanvas.SetActive(false);
         }
     }
 

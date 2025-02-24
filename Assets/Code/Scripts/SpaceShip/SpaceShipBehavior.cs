@@ -79,6 +79,11 @@ public class SpaceShipBehavior : MonoBehaviour
         UpdateBoostUI();
     }
 
+    public void ChangeSensibility(float sensibility)
+    {
+        mouseSensitivity = sensibility;
+    }
+
     private void FixedUpdate()
     {
         HandleMouseControl();
