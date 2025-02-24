@@ -9,6 +9,7 @@ public class CanonBehavior : MonoBehaviour
     [SerializeField] private GameObject buildingExplosion;
     [SerializeField] private Material destroyedMaterial;
     [SerializeField] private Canvas youWinCanvas;
+    [SerializeField] private Canvas skillsCanvas;
 
 
     private float damageCount;
@@ -56,6 +57,7 @@ public class CanonBehavior : MonoBehaviour
         }
         Cursor.lockState = CursorLockMode.None;
         Cursor.visible = true;
+        if (skillsCanvas) skillsCanvas.enabled = false;
         Time.timeScale = 0;
     }
 }

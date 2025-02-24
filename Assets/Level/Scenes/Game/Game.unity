@@ -3175,6 +3175,7 @@ MonoBehaviour:
   buildingExplosion: {fileID: 159918, guid: 415aad1f7f04c4251ac571187d765b37, type: 3}
   destroyedMaterial: {fileID: 2100000, guid: 14e25bf71b2a3384c938292641cc9e51, type: 2}
   youWinCanvas: {fileID: 1272436923}
+  skillsCanvas: {fileID: 837400066}
 --- !u!1 &451056732
 GameObject:
   m_ObjectHideFlags: 0
