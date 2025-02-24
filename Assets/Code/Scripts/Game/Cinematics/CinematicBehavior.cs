@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.UI;
 using UnityEngine.Video;
 using UnityEngine.SceneManagement;
 
@@ -6,6 +7,11 @@ public class CinematicBehavior : MonoBehaviour
 {
     public VideoPlayer videoPlayer;
     public string sceneName;
+    public GameObject skipCanvas;
+    public Image fillCircle;
+    public float holdDuration = 2f;
+    private float holdTime = 0f;
+    private bool isSkipping = false;
 
     private void Start()
     {
@@ -22,6 +28,39 @@ public class CinematicBehavior : MonoBehaviour
         {
             Debug.LogError("Aucun VideoPlayer trouvé sur l'objet.");
         }
+
+        skipCanvas.SetActive(false);
+        fillCircle.fillAmount = 0f;
+    }
+
+    private void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.Space))
+        {
+            skipCanvas.SetActive(true);
+        }
+
+        if (Input.GetKey(KeyCode.Space))
+        {
+            holdTime += Time.deltaTime;
+            fillCircle.fillAmount = holdTime / holdDuration;
+
+            if (holdTime >= holdDuration)
+            {
+                SkipCinematic();
+            }
+        }
+        else if (Input.GetKeyUp(KeyCode.Space))
+        {
+            holdTime = 0f;
+            fillCircle.fillAmount = 0f;
+            skipCanvas.SetActive(false);
+        }
+    }
+
+    private void SkipCinematic()
+    {
+        SceneManager.LoadScene(sceneName);
     }
 
     private void OnVideoEnd(VideoPlayer vp)
