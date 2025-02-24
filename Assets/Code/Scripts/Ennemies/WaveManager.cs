@@ -178,7 +178,7 @@ public class WaveManager : MonoBehaviour
         Cursor.lockState = CursorLockMode.None;
         Cursor.visible = true;
         Time.timeScale = 0;
-        gamePauseManager.enabled = false;
+        if (gamePauseManager) gamePauseManager.enabled = false;
     }
 
     public void ResumeGame()
@@ -187,7 +187,7 @@ public class WaveManager : MonoBehaviour
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
         skillsPointsCanvas.enabled = false;
-        gamePauseManager.enabled = true;
+        if (gamePauseManager) gamePauseManager.enabled = true;
         StartNextWave();
     }
 

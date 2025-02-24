@@ -249,7 +249,7 @@ MonoBehaviour:
   shotsPerBurst: 3
   timeBetweenShots: 0.1
   damage: 30
-  bulletDispersion: 0.05
+  bulletDispersion: 0.009
 --- !u!114 &2100518451978741317
 MonoBehaviour:
   m_ObjectHideFlags: 0
